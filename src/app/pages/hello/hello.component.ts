@@ -8,7 +8,6 @@ import { LoginComponent } from '../login/login.component'
 export class HelloComponent implements OnInit {
         @Input() title: string;
   constructor() { 
-    this.title= "hola"
   }
 
   ngOnInit() {
