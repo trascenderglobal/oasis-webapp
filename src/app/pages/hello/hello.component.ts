@@ -6,7 +6,7 @@ import { LoginComponent } from '../login/login.component'
   styleUrls: ['./hello.component.scss']
 })
 export class HelloComponent implements OnInit {
-        @Input() title: string;
+        @Input() valueEmail: string;
   constructor() { 
   }
 
