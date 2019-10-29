@@ -1,0 +1,63 @@
+/* Defatult theme for AngularMaterial */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html, body {
+  overflow-x: hidden;
+}
+
+.title {
+    height: 30px;
+    width: 100%;
+    background: #00A758; 
+    text-align: center;
+    font-weight: bold;
+    justify-content: center;
+    align-content: center;
+    display: grid;
+    color: azure;
+}
+
+/* PAGE ANIMATION */
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  .animated2 {
+    animation-delay: 1.5s;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  .animated3 {
+    animation-delay: 0.5s;
+    -webkit-animation-duration: 1.5s;
+    animation-duration: 1.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  .fast {
+    -webkit-animation-duration: 0.4s;
+    animation-duration: 0.4s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fadeIn {
+    animation-name: fadeIn;
+  }  
