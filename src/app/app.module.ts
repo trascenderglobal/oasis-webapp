@@ -33,6 +33,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import * as firebase from 'firebase';
 import { HttpClientModule } from '@angular/common/http';
 import { HelloComponent } from './pages/hello/hello.component';
+import { ServiceModule } from "./services/service.module";
 
 // FIREBASE INITI
 firebase.initializeApp(environment.firebaseConfig);
@@ -62,7 +63,8 @@ firebase.initializeApp(environment.firebaseConfig);
     FormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceModule
   ],
   providers: [
     AuthService,
