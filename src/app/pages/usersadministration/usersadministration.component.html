@@ -19,13 +19,15 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Rol</th>
                             <th scope="col">Acción</th>
+                            <th scope="col">telefono</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1123456</th>
-                            <td>Jhon</td>
-                            <td>Doe</td>
+                        <tr *ngFor="let item of usuariosRegistrados.users; let i = index">
+                            <th scope="row">{{item.id}}</th>
+                            <td>{{item.full_name}}</td>
+                            <td>{{item.discriminator}}</td>
+                            <td>{{item.phone}}</td>
                             <td>
                                 <div class="row">
                                     <a href="">Editar</a>
@@ -114,3 +116,6 @@
 </ng-template>
 
 <button (click)="Save()">guardar</button>
+
+
+
