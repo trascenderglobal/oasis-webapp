@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from "@angular/core";
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   CrearUsuarioService,
-  ListaUsuariosService
+  ListaUsuariosService,
+  EditarUsuarioService,
+  EliminarUsuarioService
 } from "src/app/services/service.index";
 import { FormGroup, FormControl } from "@angular/forms";
 
@@ -26,12 +28,16 @@ export class NgbdModalContent {
 })
 export class UsersadministrationComponent implements OnInit {
   frmRegistroUsuario: FormGroup;
+  frmEditarUsuario: FormGroup;
   usuariosRegistrados: any = [];
+  usuarioAEditar = '';
 
   constructor(
     private modalService: NgbModal,
     private _crearUsuarioService: CrearUsuarioService,
-    private _listaUsuarioService: ListaUsuariosService
+    private _listaUsuarioService: ListaUsuariosService,
+    private _editarUsuarioService: EditarUsuarioService,
+    private _eliminarUsuario: EliminarUsuarioService
   ) {
     this.frmRegistroUsuario = new FormGroup({
       id: new FormControl(),
@@ -39,6 +45,14 @@ export class UsersadministrationComponent implements OnInit {
       email: new FormControl(),
       password: new FormControl(),
       discriminator: new FormControl(),
+      phone: new FormControl("")
+    });
+
+    this.frmEditarUsuario = new FormGroup({
+      id: new FormControl(""),
+      full_name: new FormControl(""),
+      email: new FormControl(""),
+      discriminator: new FormControl(""),
       phone: new FormControl("")
     });
   }
@@ -55,6 +69,10 @@ export class UsersadministrationComponent implements OnInit {
   // }
 
   open2(content) {
+    this.modalService.open(content);
+  }
+
+  abrirModalActualizacion(content) {
     this.modalService.open(content);
   }
 
@@ -76,5 +94,50 @@ export class UsersadministrationComponent implements OnInit {
       .subscribe(res => {
         console.log("respuestaaaaaa", res);
       });
+  }
+
+  obtenerUsuario(idUsuario, content) {
+      this.usuarioAEditar = idUsuario;
+    console.log("identificacion usuario ", idUsuario);
+    this._editarUsuarioService
+      .getListarUsuario(idUsuario)
+      .subscribe((respuesta: any) => {
+        let usuarioObtenidoActualizar: any = {
+          id: respuesta.id,
+          full_name: respuesta.full_name,
+          email: respuesta.email,
+          discriminator: respuesta.discriminator,
+          phone: respuesta.phone,
+
+        };
+
+        this.frmEditarUsuario.setValue(usuarioObtenidoActualizar);
+
+        // console.log("respuesta",respuesta.id)
+
+        console.log(usuarioObtenidoActualizar);
+
+        // this.usuarioObtenidoActualizar = respuesta;
+        // console.log("resultado obtenido",this.usuarioObtenidoActualizar);
+        this.modalService.open(content);
+      });
+  }
+
+  guardarActualizarUsuario() {
+    let datos = this.frmEditarUsuario.value;
+    console.log("nuevo nombre", datos);
+    this._editarUsuarioService.guardarEditarUsuario(this.usuarioAEditar,datos).subscribe(res=>{
+        console.log(res);
+    });
+  }
+
+  eliminarUsuario(id) {
+    if (confirm("Desea eliminar el registro?")) {
+      this._eliminarUsuario.eliminoUsuario(id).subscribe(res => {
+        if (res) {
+          alert("eliminado");
+        }
+      });
+    }
   }
 }

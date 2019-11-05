@@ -17,8 +17,8 @@ import { BannerComponent } from './shared/banner/banner.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { UsersadministrationComponent } from './pages/usersadministration/usersadministration.component';
 import { PedidosComponent } from './pages/pedidos/pedidos.component';
-import { CatalogoComponent, NgbdModalContentC } from './pages/catalogo/catalogo.component';
-import { CatalogopremiosComponent, NgbdModalContentP } from './pages/catalogopremios/catalogopremios.component';
+import { CatalogoComponent } from './pages/catalogo/catalogo.component';
+import { CatalogopremiosComponent } from './pages/catalogopremios/catalogopremios.component';
 import { DetalleComponent } from './pages/detalle/detalle.component';
 import { AuthService } from './services/auth.service';
 import { LoginService } from './services/login.service';
@@ -51,8 +51,8 @@ firebase.initializeApp(environment.firebaseConfig);
     CatalogopremiosComponent,
     NgbdModalContent,
     DetalleComponent,
-    NgbdModalContentC,
-    NgbdModalContentP,
+    // NgbdModalContentC,
+    // NgbdModalContentP,
     HelloComponent
   ],
   imports: [
@@ -74,8 +74,8 @@ firebase.initializeApp(environment.firebaseConfig);
   bootstrap: [
     AppComponent,
     NgbdModalContent,
-    NgbdModalContentC,
-    NgbdModalContentP
+    // NgbdModalContentC,
+    // NgbdModalContentP
   ]
 })
 export class AppModule { }

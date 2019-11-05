@@ -1,97 +1,104 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatabaseService } from 'src/app/services/database.service';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input } from "@angular/core";
+import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormGroup, FormControl } from "@angular/forms";
+import {
+  CrearCatalogoService,
+  MostrarCatalogoProductoService,
+  EditarProductoCatalogoService
+} from "src/app/services/service.index";
 
+// import { DatabaseService } from 'src/app/services/database.service';
 @Component({
-  // tslint:disable-next-line: component-selector
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header animated fadeIn">
-      <p class="modal-title"><b>Agregar Producto</b></p>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body animated fadeIn">
-      <div class="row">
-        <div class="col-4">
-          <p>Descripción</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="text">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <p>Precio</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="number">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <p>Puntos por compra</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="number">
-        </div>
-      </div>
-    </div>
-    <div class="row animated fadeIn mb-5">
-      <div class="col-6 d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-dark btn-primary">
-          <i style="color: white;">Guardar</i>
-        </button>
-      </div>
-      <div class="col-6 d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-dark btn-primary" (click)="activeModal.close('Close click')">
-          <i style="color: white;">Cancelar</i>
-        </button>
-      </div>
-    </div>
-  `
-})
-// tslint:disable-next-line: component-class-suffix
-export class NgbdModalContentC {
-  @Input() name;
-
-  constructor(public activeModal: NgbActiveModal) {}
-}
-
-@Component({
-  selector: 'app-catalogo',
-  templateUrl: './catalogo.component.html',
-  styleUrls: ['./catalogo.component.scss']
+  selector: "app-catalogo",
+  templateUrl: "./catalogo.component.html",
+  styleUrls: ["./catalogo.component.scss"],
+  providers: [NgbModal]
 })
 export class CatalogoComponent implements OnInit {
+  // productos = [];
+  frmRegistroCatalogo: FormGroup;
+  listaProductos: any = [];
+  productoAEditar = '';
 
-  productos = [];
-
-  constructor(  private modalService: NgbModal,
-                private database: DatabaseService,
-                private router: ActivatedRoute ) {
-                  this.router.parent.params.subscribe( parametros => {
-                    console.log('Ruta Hija usuario nuevo');
-                    console.log(parametros);
-                  });
-                }
-
-  ngOnInit() {
-    this.listarProductos();
-  }
-
-  listarProductos() {
-    this.database.getProductos().subscribe((res: any[]) => {
-      console.log(res);
-      this.productos = res;
+  constructor(
+    private modalService: NgbModal,
+    private _crearCatalogoService: CrearCatalogoService,
+    private _mostrarCatalogoProductoService: MostrarCatalogoProductoService,
+    private _editarProductoCatalogoService: EditarProductoCatalogoService
+  ) {
+    this.frmRegistroCatalogo = new FormGroup({
+      description: new FormControl(),
+      unit_value: new FormControl(),
+      image_url: new FormControl(),
+      point_value: new FormControl(),
+      available: new FormControl()
     });
   }
 
-  open() {
-    const modalRef = this.modalService.open(NgbdModalContentC);
-    modalRef.componentInstance.name = 'Anything';
+  ngOnInit() {
+    // this.listarProductos();
+    this._mostrarCatalogoProductoService
+      .getProductosRegistrados()
+      .subscribe(res => {
+        this.listaProductos = res;
+        console.log(res);
+      });
   }
 
+  modalAgregarProducto(content) {
+    this.modalService.open(content);
+  }
+
+  guardarProductoCatalogo() {
+    this._crearCatalogoService
+      .postCrearCatalogo(this.frmRegistroCatalogo.value)
+      .subscribe(res => {
+        alert("registro guardado");
+      });
+  }
+
+  obtenerProducto(idProducto, content) {
+    console.log(idProducto);
+
+    this.productoAEditar = idProducto;
+
+    console.log("identificacion del producto ", idProducto);
+
+    this._editarProductoCatalogoService
+      .getListarProducto(idProducto)
+      .subscribe((respuesta: any) => {
+        console.log(respuesta);
+        let productosObtenidosActualizar: any = {
+          description: respuesta.description,
+          unit_value: respuesta.unit_value,
+          image_url: respuesta.image_url,
+          point_value: respuesta.point_value,
+          available: respuesta.available
+        };
+
+        this.frmRegistroCatalogo.setValue(productosObtenidosActualizar);
+        this.modalService.open(content);
+      });
+  }
+
+  guardarEditarProductoCatalogo(){
+
+
+    let datos = this.frmRegistroCatalogo.value;
+    // console.log("nuevos datosss", datos);
+    this._editarProductoCatalogoService.guardarEditarProducto(this.productoAEditar,datos).subscribe(res=>{
+        console.log(res);
+    });
+
+  }
+
+  eliminarProducto(id) {
+    // if (confirm("Desea eliminar el registro?")) {
+    //   this._eliminarUsuario.eliminoUsuario(id).subscribe(res => {
+    //     if (res) {
+    //       alert("eliminado");
+    //     }
+    //   });
+    // }
+  }
 }

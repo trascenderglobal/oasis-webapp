@@ -30,10 +30,10 @@
                             <td>{{item.phone}}</td>
                             <td>
                                 <div class="row">
-                                    <a href="">Editar</a>
+                                    <span (click)="obtenerUsuario(item.id,editarUsuario)">Editar</span>
                                 </div>
                                 <div class="row">
-                                    <a href="">Eliminar</a>
+                                   <span (click)="eliminarUsuario(item.id)" >Eliminar</span>
                                 </div>
                             </td>
                         </tr>
@@ -47,7 +47,7 @@
 <ng-template #modalDescarga let-c="close" let-d="dismiss">
     <div class="modal-header animated fadeIn">
         <p class="modal-title"><b>Registrar Usuario</b></p>
-        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="d()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <button type="button" class="btn btn-outline-dark btn-primary"
-                        (click)="activeModal.close('Close click')">
+                        (click)="d(close);">
                         <i style="color: white;">Cancelar</i>
                     </button>
                 </div>
@@ -116,6 +116,73 @@
 </ng-template>
 
 <button (click)="Save()">guardar</button>
+
+
+
+<ng-template #editarUsuario let-c="close" let-d="dismiss">
+    <div class="modal-header animated fadeIn">
+        <p class="modal-title"><b>Editar Usuario</b></p>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body animated fadeIn">
+        <form [formGroup]="frmEditarUsuario" (ngSubmit)="guardarActualizarUsuario()" novalidate="novalidate">
+            <div class="row">
+                <div class="col-4">
+                    <p>ID</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="id"  class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Nombre</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="full_name"  class="form-control" placeholder="Nombre o Cargo" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Email</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row input-group">
+                <div class="col-4">
+                    <label for="roles">Rol</label>
+                </div>
+                <div class="col-8" style="padding-left: 25px;">
+                    <select formControlName="discriminator"  class="custom-select" id="roles">
+                        <option selected>Seleccione</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Delivery</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row animated fadeIn mb-5">
+                <div class="col-6 d-flex justify-content-center">
+                    <button  type="submit" class="btn btn-outline-dark btn-primary">
+                        <i style="color: white;">Guardar</i>
+                    </button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark btn-primary"
+                        (click)="activeModal.close('Close click')">
+                        <i style="color: white;">Cancelar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
 
 
 
