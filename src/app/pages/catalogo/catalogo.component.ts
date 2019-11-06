@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormGroup, FormControl } from "@angular/forms";
 import {
   CrearCatalogoService,
