@@ -11,6 +11,9 @@ import { EditarProductoCatalogoService } from './service.index';
 import { CrearPremioService } from './service.index';
 import { ListarPremiosService } from './service.index';
 import { EditarPremioService } from './service.index';
+import { EliminarProductoService } from './service.index';
+import { EliminarPremioService } from './eliminar-premio/eliminar-premio.service';
+
 
 ListarPremiosService
 
@@ -26,7 +29,9 @@ ListarPremiosService
     EditarProductoCatalogoService,
     CrearPremioService,
     ListarPremiosService,
-    EditarPremioService
+    EditarPremioService,
+    EliminarProductoService,
+    EliminarPremioService
   ]
 })
 export class ServiceModule {}

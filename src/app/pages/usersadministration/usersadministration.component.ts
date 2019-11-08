@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from '@angular/router';
 import {
   CrearUsuarioService,
   ListaUsuariosService,
@@ -30,14 +31,15 @@ export class UsersadministrationComponent implements OnInit {
   frmRegistroUsuario: FormGroup;
   frmEditarUsuario: FormGroup;
   usuariosRegistrados: any = [];
-  usuarioAEditar = '';
+  usuarioAEditar = "";
 
   constructor(
     private modalService: NgbModal,
     private _crearUsuarioService: CrearUsuarioService,
     private _listaUsuarioService: ListaUsuariosService,
     private _editarUsuarioService: EditarUsuarioService,
-    private _eliminarUsuario: EliminarUsuarioService
+    private _eliminarUsuario: EliminarUsuarioService,
+    private router: Router
   ) {
     this.frmRegistroUsuario = new FormGroup({
       id: new FormControl(),
@@ -50,6 +52,7 @@ export class UsersadministrationComponent implements OnInit {
 
     this.frmEditarUsuario = new FormGroup({
       id: new FormControl(""),
+      password: new FormControl(),
       full_name: new FormControl(""),
       email: new FormControl(""),
       discriminator: new FormControl(""),
@@ -58,15 +61,28 @@ export class UsersadministrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._listaUsuarioService.getUsuariosRegistrados().subscribe(res => {
-      this.usuariosRegistrados = res;
-    });
+    this._listaUsuarioService.getUsuariosRegistrados().subscribe(
+      res => {
+        this.usuariosRegistrados = res;
+      },
+      err => {
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          case 500:
+            alert("error 500");
+            break;
+          default:
+            alert("otro tipo de error ");
+            break;
+        }
+      }
+    );
   }
-
-  // open() {
-  //   const modalRef = this.modalService.open(NgbdModalContent);
-  //   modalRef.componentInstance.name = 'Anything';
-  // }
 
   open2(content) {
     this.modalService.open(content);
@@ -85,59 +101,136 @@ export class UsersadministrationComponent implements OnInit {
       discriminator: this.frmRegistroUsuario.value.discriminator
     };
 
-    console.log(postData);
-
-    // let prueba = JSON.stringify({ username, password, })
-
     this._crearUsuarioService
       .postCrearUsuario(this.frmRegistroUsuario.value.id, postData)
-      .subscribe(res => {
-        console.log("respuestaaaaaa", res);
-      });
+      .subscribe(
+        res => {
+            this.router.navigate(['/home/:id/user-administration']);
+          alert("guardado correctamente");
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+
+            case 409:
+              alert("error 409");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error ");
+              break;
+          }
+        }
+      );
   }
 
   obtenerUsuario(idUsuario, content) {
-      this.usuarioAEditar = idUsuario;
+    this.usuarioAEditar = idUsuario;
     console.log("identificacion usuario ", idUsuario);
-    this._editarUsuarioService
-      .getListarUsuario(idUsuario)
-      .subscribe((respuesta: any) => {
+    this._editarUsuarioService.getListarUsuario(idUsuario).subscribe(
+      (respuesta: any) => {
         let usuarioObtenidoActualizar: any = {
           id: respuesta.id,
           full_name: respuesta.full_name,
+          password: '',
           email: respuesta.email,
           discriminator: respuesta.discriminator,
-          phone: respuesta.phone,
-
+          phone: respuesta.phone
         };
 
         this.frmEditarUsuario.setValue(usuarioObtenidoActualizar);
-
-        // console.log("respuesta",respuesta.id)
-
         console.log(usuarioObtenidoActualizar);
-
-        // this.usuarioObtenidoActualizar = respuesta;
-        // console.log("resultado obtenido",this.usuarioObtenidoActualizar);
         this.modalService.open(content);
-      });
+      },
+      err => {
+        // Entra aquí si el servicio entrega un código http de error EJ: 404,
+
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 409:
+            alert("error 409");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          case 500:
+            alert("error 500");
+            break;
+          default:
+            alert("otro tipo de error");
+            break;
+        }
+        console.log(err);
+      }
+    );
   }
 
   guardarActualizarUsuario() {
     let datos = this.frmEditarUsuario.value;
     console.log("nuevo nombre", datos);
-    this._editarUsuarioService.guardarEditarUsuario(this.usuarioAEditar,datos).subscribe(res=>{
-        console.log(res);
-    });
+    this._editarUsuarioService
+      .guardarEditarUsuario(this.usuarioAEditar, datos)
+      .subscribe(
+        res => {
+          console.log(res);
+          alert("actualizado correctamente");
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error");
+              break;
+          }
+          console.log(err);
+        }
+      );
   }
 
   eliminarUsuario(id) {
     if (confirm("Desea eliminar el registro?")) {
-      this._eliminarUsuario.eliminoUsuario(id).subscribe(res => {
-        if (res) {
-          alert("eliminado");
+      this._eliminarUsuario.eliminoUsuario(id).subscribe(
+        res => {
+          if (res) {
+            alert("eliminado");
+          }
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+
+            case 404:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error");
+              break;
+          }
+          console.log(err);
         }
-      });
+      );
     }
   }
 }
