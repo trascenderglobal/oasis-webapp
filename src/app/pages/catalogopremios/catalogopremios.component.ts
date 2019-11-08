@@ -77,6 +77,7 @@ export class CatalogopremiosComponent implements OnInit {
       .guardarEditarPremio(this.premioAEditar, datos)
       .subscribe(res => {
         console.log(res);
+        alert("registro editado");
       });
   }
 
@@ -110,6 +111,7 @@ export class CatalogopremiosComponent implements OnInit {
   }
 
   modalAgregarPremio(content) {
+    this.frmRegistroPremio.reset();
     this.modalService.open(content);
   }
 }

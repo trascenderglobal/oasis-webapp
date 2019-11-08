@@ -105,8 +105,9 @@ export class UsersadministrationComponent implements OnInit {
       .postCrearUsuario(this.frmRegistroUsuario.value.id, postData)
       .subscribe(
         res => {
-            this.router.navigate(['/home/:id/user-administration']);
+
           alert("guardado correctamente");
+          this.router.navigate(['home/:id/user-administration']);
         },
         err => {
           switch (err.status) {

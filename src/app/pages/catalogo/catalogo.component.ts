@@ -61,6 +61,7 @@ export class CatalogoComponent implements OnInit {
   }
 
   modalAgregarProducto(content) {
+    this.frmRegistroCatalogo.reset();
     this.modalService.open(content);
   }
 
@@ -133,6 +134,7 @@ export class CatalogoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
+          alert("registro editado");
         },
         err => {
           switch (err.status) {
