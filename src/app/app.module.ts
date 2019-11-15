@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 // Firebase services + enviorment module
 // import { AngularFireModule } from '@angular/fire';
@@ -9,7 +10,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 
 import { NgbdModalContent } from './pages/usersadministration/usersadministration.component';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -23,6 +23,9 @@ import { DetalleComponent } from './pages/detalle/detalle.component';
 import { AuthService } from './services/auth.service';
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
+
+import { ROUTES } from './app.routes';
+
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,7 +60,7 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RouterModule.forRoot(ROUTES, { useHash: false }),
     NgbModule,
     ReactiveFormsModule,
     FormsModule,

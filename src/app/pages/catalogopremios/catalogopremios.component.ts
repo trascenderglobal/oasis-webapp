@@ -46,6 +46,7 @@ export class CatalogopremiosComponent implements OnInit {
       .postCrearPremio(this.frmRegistroPremio.value)
       .subscribe(res => {
         alert("registro guardado");
+        location.reload();
       });
   }
 
@@ -78,6 +79,7 @@ export class CatalogopremiosComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
         alert("registro editado");
+        location.reload();
       });
   }
 
@@ -87,6 +89,7 @@ export class CatalogopremiosComponent implements OnInit {
         res => {
           if (res) {
             alert("eliminado");
+            location.reload();
           }
         },
         err => {

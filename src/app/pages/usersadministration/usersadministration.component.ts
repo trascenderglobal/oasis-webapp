@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 import {
   CrearUsuarioService,
   ListaUsuariosService,
@@ -105,9 +105,9 @@ export class UsersadministrationComponent implements OnInit {
       .postCrearUsuario(this.frmRegistroUsuario.value.id, postData)
       .subscribe(
         res => {
-
           alert("guardado correctamente");
-          this.router.navigate(['home/:id/user-administration']);
+          // this.router.navigate(['/home/user-administration']);
+          location.reload();
         },
         err => {
           switch (err.status) {
@@ -140,7 +140,7 @@ export class UsersadministrationComponent implements OnInit {
         let usuarioObtenidoActualizar: any = {
           id: respuesta.id,
           full_name: respuesta.full_name,
-          password: '',
+          password: "",
           email: respuesta.email,
           discriminator: respuesta.discriminator,
           phone: respuesta.phone
@@ -184,6 +184,7 @@ export class UsersadministrationComponent implements OnInit {
         res => {
           console.log(res);
           alert("actualizado correctamente");
+          location.reload();
         },
         err => {
           switch (err.status) {
@@ -211,6 +212,7 @@ export class UsersadministrationComponent implements OnInit {
         res => {
           if (res) {
             alert("eliminado");
+            location.reload();
           }
         },
         err => {

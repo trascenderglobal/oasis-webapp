@@ -1,14 +1,13 @@
 <app-banner title="LOGIN ADMIN OASIS"></app-banner>
-<form (ngSubmit)="logIn(username.value, password.value, $event)">
+<form  [formGroup]="frmLogin" (ngSubmit)="inicioSesion()" novalidate="novalidate">
     <div class="form-group">
       <label for="email">Email address</label>
       <input  type="email" 
-               #username
+              formControlName="username"
               class="form-control" 
               id="email" 
               aria-describedby="emailHelp" 
               placeholder="Enter email"
-              value=""
            >
                  <small  id="emailHelp" 
               class="form-text text-muted">We'll never share your email with anyone else.
@@ -17,14 +16,13 @@
     <div class="form-group">
       <label for="password">Password</label>
       <input  type="password" 
-               #password
+               formControlName="password"
               class="form-control" 
               id="password" 
               placeholder="Password" 
           >
     </div>
-  <button type="submit"  (click)="logIn(username.value, password.value, $event)" (click)="afterLogin()"
-          class="btn btn-primary btn-lg btn-block">
+  <button type="submit" class="btn btn-primary btn-lg btn-block">
     Submit
   </button>
 </form>

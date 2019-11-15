@@ -71,6 +71,7 @@ export class CatalogoComponent implements OnInit {
       .subscribe(
         res => {
           alert("registro guardado");
+          location.reload();
         },
         err => {
           switch (err.status) {
@@ -135,6 +136,7 @@ export class CatalogoComponent implements OnInit {
         res => {
           console.log(res);
           alert("registro editado");
+          location.reload();
         },
         err => {
           switch (err.status) {
@@ -163,6 +165,7 @@ export class CatalogoComponent implements OnInit {
         res => {
           if (res) {
             alert("eliminado");
+            location.reload();
           }
         },
         err => {
