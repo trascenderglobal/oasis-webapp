@@ -15,14 +15,9 @@ export class PedidosComponent implements OnInit {
 
   ngOnInit() {
     this._listarPerdidosService.getPedidos().subscribe((res:any) => {
-      console.log(res);
-     
-
       for (var i = 0; i < res.orders.length; i++) {
-
-        var prueba = {};
-        prueba = 
-
+        var data = {};
+        data = 
           {
             pedido: res.orders[i].id,
             fecha: res.orders[i].created,
@@ -33,15 +28,10 @@ export class PedidosComponent implements OnInit {
           }
         
 
-        this.objects.push(prueba);
-        // console.log("sustos", res.orders[i].id);
+        this.objects.push(data);
       }
 
-      console.log("sharannn",this.objects)
-
-
-
-      // console.log(this.objects);
+      console.log("sharannn",this.objects);
 
     });
   }
