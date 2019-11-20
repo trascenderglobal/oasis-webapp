@@ -13,9 +13,7 @@ import { ListarPremiosService } from './service.index';
 import { EditarPremioService } from './service.index';
 import { EliminarProductoService } from './service.index';
 import { EliminarPremioService } from './eliminar-premio/eliminar-premio.service';
-
-
-ListarPremiosService
+import { ListarPerdidosService } from './listar-pedidos/listar-perdidos.service';
 
 @NgModule({
   imports: [CommonModule, HttpClientModule],
@@ -31,7 +29,8 @@ ListarPremiosService
     ListarPremiosService,
     EditarPremioService,
     EliminarProductoService,
-    EliminarPremioService
+    EliminarPremioService,
+    ListarPerdidosService
   ]
 })
 export class ServiceModule {}

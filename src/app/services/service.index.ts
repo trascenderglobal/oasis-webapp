@@ -1,3 +1,4 @@
+export { ListarPerdidosService } from './listar-pedidos/listar-perdidos.service';
 export { EliminarPremioService } from './eliminar-premio/eliminar-premio.service';
 export { EliminarProductoService } from './eliminar-producto/eliminar-producto.service';
 export { EditarPremioService } from './editar-premio/editar-premio.service';
@@ -10,6 +11,8 @@ export { EliminarUsuarioService } from './eliminar-usuario/eliminar-usuario.serv
 export { EditarUsuarioService } from './editar-usuario/editar-usuario.service';
 export { ListaUsuariosService } from './listar-usuarios/lista-usuarios.service';
 export { CrearUsuarioService } from './creacion-usuario/crear-usuario.service';
+
+
 
 
 
