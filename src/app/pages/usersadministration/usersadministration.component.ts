@@ -9,14 +9,6 @@ import {
 } from "src/app/services/service.index";
 import { FormGroup, FormControl } from "@angular/forms";
 
-// @Component({
-//   // tslint:disable-next-line: component-selector
-//   selector: "ngbd-modal-content",
-//   templateUrl: "./usersadministration.component.html",
-//   providers: [NgbModal]
-// })
-// tslint:disable-next-line: component-class-suffix
-
 
 @Component({
   selector: "app-usersadministration",

@@ -50,6 +50,7 @@ export class DetallePedidosComponent implements OnInit {
             console.log("order_productosssss", res2.orders[t].order_products[t].product);
             data2 = {
               items: res2.orders[i].order_products[t].product,
+              cantidad: res2.orders[i].order_products[t].quantity
             };
             console.log("data 2 en ciclo", data2);
             this.productos.push(data2);
