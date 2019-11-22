@@ -11,22 +11,22 @@ import { DetallePedidoService } from 'src/app/services/service.index';
 export class DetallePedidosComponent implements OnInit {
 
   datosPrimerTabla: any = {};
-  productos: any= [];
-  constructor(private router: ActivatedRoute, private _detallePedidoService: DetallePedidoService ) {
+  productos: any = [];
+  constructor(private router: ActivatedRoute, private _detallePedidoService: DetallePedidoService) {
     this.router.params.subscribe(params => {
       console.log('paramssssss', params.id);
       this.getDetallePedido(params.id);
     });
-   }
+  }
 
   ngOnInit() {
   }
 
 
-  listarProductos(idCliente){
-    
+  listarProductos(idCliente) {
+
     this._detallePedidoService.getListarProductosCliente(idCliente).subscribe(
-      (res2:any) => {
+      (res2: any) => {
         // this.listaProductos = res;
         // this.datosPrimerTabla = {
         //   numPedido: res.id,
@@ -40,19 +40,22 @@ export class DetallePedidosComponent implements OnInit {
         // };
         // this.objects.push(data);
 
+        console.log("este es el la primera respuesta", res2)
+
         for (var i = 0; i < res2.orders.length; i++) {
-          
+
           var data2 = {};
 
-          for(var t = 0; t < res2.orders[i].order_products.length; t++ ){
+          for (var t = 0; t < res2.orders[i].order_products.length; t++) {
             console.log("order_productosssss", res2.orders[t].order_products[t].product);
             data2 = {
-              items: res2.orders[t].order_products[t].product,
+              items: res2.orders[i].order_products[t].product,
             };
+            console.log("data 2 en ciclo", data2);
             this.productos.push(data2);
           }
-          
-          console.log("fuera del ciclo orderproductos",this.productos);
+
+
 
           // console.log("nueva respuesta", res2.orders[i])
 
@@ -61,10 +64,12 @@ export class DetallePedidosComponent implements OnInit {
         }
 
         // console.log("objeto", this.datosPrimerTabla);
-        this.productos = res2;
+        // this.productos = res2;
+
+        console.log("fuera del ciclo orderproductos", this.productos);
 
 
-        console.log("datos servicio detalle", this.productos);
+        // console.log("datos servicio detalle", this.productos);
       },
       err => {
         switch (err.status) {
@@ -85,10 +90,10 @@ export class DetallePedidosComponent implements OnInit {
 
   }
 
-  getDetallePedido(id){
+  getDetallePedido(id) {
 
     this._detallePedidoService.getListarPedido(id).subscribe(
-      (res:any) => {
+      (res: any) => {
         // this.listaProductos = res;
         this.datosPrimerTabla = {
           numPedido: res.id,
