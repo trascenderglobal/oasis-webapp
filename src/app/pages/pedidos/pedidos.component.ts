@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ListarPerdidosService } from "src/app/services/service.index";
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-pedidos",
@@ -8,7 +9,9 @@ import { ListarPerdidosService } from "src/app/services/service.index";
 })
 export class PedidosComponent implements OnInit {
   objects: any = [];
-  constructor(private _listarPerdidosService: ListarPerdidosService) {}
+
+  constructor(private _listarPerdidosService: ListarPerdidosService,private router: Router ) {}
+
   ngOnInit() {
     this._listarPerdidosService.getPedidos().subscribe((res: any) => {
       for (var i = 0; i < res.orders.length; i++) {
@@ -28,4 +31,15 @@ export class PedidosComponent implements OnInit {
       console.log("sharannn", this.objects);
     });
   }
+
+
+
+  verPromocion(param) {
+    this.router.navigate(['/detalle-pedidos/', param ]);
+  }
+
+
+
+
+
 }

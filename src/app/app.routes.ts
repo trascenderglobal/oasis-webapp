@@ -6,6 +6,8 @@ import { PedidosComponent } from "./pages/pedidos/pedidos.component";
 import { HelloComponent } from "./pages/hello/hello.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { HomeComponent } from './pages/home/home.component';
+import { DetallePedidosComponent } from './pages/detalle-pedidos/detalle-pedidos.component';
+
 
 
 export const ROUTES: Routes = [
@@ -21,6 +23,7 @@ export const ROUTES: Routes = [
     { path: "pedidos", component: PedidosComponent },
     { path: "catalogo", component: CatalogoComponent },
     { path: "catalogo-premios", component: CatalogopremiosComponent },
+    { path: "detalle-pedidos/:id", component: DetallePedidosComponent },
   ]
 },
 

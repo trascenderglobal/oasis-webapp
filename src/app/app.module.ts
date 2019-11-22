@@ -37,6 +37,7 @@ import * as firebase from 'firebase';
 import { HttpClientModule } from '@angular/common/http';
 import { HelloComponent } from './pages/hello/hello.component';
 import { ServiceModule } from "./services/service.module";
+import { DetallePedidosComponent } from './pages/detalle-pedidos/detalle-pedidos.component';
 
 // FIREBASE INITI
 firebase.initializeApp(environment.firebaseConfig);
@@ -56,7 +57,8 @@ firebase.initializeApp(environment.firebaseConfig);
     DetalleComponent,
     // NgbdModalContentC,
     // NgbdModalContentP,
-    HelloComponent
+    HelloComponent,
+    DetallePedidosComponent
   ],
   imports: [
     BrowserModule,
