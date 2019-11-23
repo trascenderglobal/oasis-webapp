@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of objects">
+      <tr *ngFor="let item of objects | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ">
         <td class="wrap">{{item.pedido}}</td>
         <td>{{item.fecha}}</td>
         <td>{{item.nombre}}</td>
@@ -27,6 +27,18 @@
       </tr>
     </tbody>
   </table>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+            <div class="content-paginador">
+                <div class="d-flex justify-content-center p-2">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
+                </div>
+            </div>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <router-outlet></router-outlet>

@@ -24,4 +24,11 @@ export class DetallePedidoService {
     return this.http.get(url,{headers: headers});
   }
 
+  guardarEditarStatus(id,datos){
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', "Bearer " + localStorage.getItem('token') );
+    const url = URL_SERVICIOS + "order/" + id + "";
+    return this.http.patch(url,datos,{headers: headers});
+  }
+
 }

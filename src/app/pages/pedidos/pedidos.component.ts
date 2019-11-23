@@ -9,6 +9,9 @@ import {Router} from '@angular/router';
 })
 export class PedidosComponent implements OnInit {
   objects: any = [];
+  page = 1;
+  pageSize = 4;
+  collectionSize = "";
 
   constructor(private _listarPerdidosService: ListarPerdidosService,private router: Router ) {}
 
@@ -28,7 +31,8 @@ export class PedidosComponent implements OnInit {
         };
         this.objects.push(data);
       }
-      console.log("sharannn", this.objects);
+      // console.log(this.objects);
+      this.collectionSize = this.objects.length;
     });
   }
 

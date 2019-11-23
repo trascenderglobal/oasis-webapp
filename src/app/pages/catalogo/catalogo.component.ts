@@ -20,6 +20,9 @@ export class CatalogoComponent implements OnInit {
   frmRegistroCatalogo: FormGroup;
   listaProductos: any = [];
   productoAEditar = "";
+  page = 1;
+  pageSize = 4;
+  collectionSize = "";
 
   constructor(
     private modalService: NgbModal,
@@ -40,9 +43,9 @@ export class CatalogoComponent implements OnInit {
   ngOnInit() {
     // this.listarProductos();
     this._mostrarCatalogoProductoService.getProductosRegistrados().subscribe(
-      res => {
+      (res: any) => {
         this.listaProductos = res;
-        console.log(res);
+        this.collectionSize = res.products.length;
       },
       err => {
         switch (err.status) {
@@ -100,7 +103,6 @@ export class CatalogoComponent implements OnInit {
 
     this._editarProductoCatalogoService.getListarProducto(idProducto).subscribe(
       (respuesta: any) => {
-        console.log(respuesta);
         let productosObtenidosActualizar: any = {
           description: respuesta.description,
           unit_value: respuesta.unit_value,
@@ -134,7 +136,6 @@ export class CatalogoComponent implements OnInit {
       .guardarEditarProducto(this.productoAEditar, datos)
       .subscribe(
         res => {
-          console.log(res);
           alert("registro editado");
           location.reload();
         },

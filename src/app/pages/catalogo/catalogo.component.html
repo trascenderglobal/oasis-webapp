@@ -16,15 +16,13 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">ID producto</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Valor Unitario</th>
                             <th scope="col">Acción</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let item of listaProductos.products">
+                    <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                         <tr>
-                            <th scope="row">{{ item.id }}</th>
                             <td>{{ item.description }}</td>
                             <td>{{ item.unit_value }} USD</td>
                             <td>
@@ -38,6 +36,13 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="content-paginador">
+            <div class="d-flex justify-content-center p-2">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
             </div>
         </div>
     </div>

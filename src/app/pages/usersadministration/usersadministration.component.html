@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of usuariosRegistrados.users; let i = index">
+                        <tr *ngFor="let item of usuariosRegistrados.users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                             <th scope="row">{{item.id}}</th>
                             <td>{{item.full_name}}</td>
                             <td>{{item.discriminator}}</td>
@@ -42,6 +42,18 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-12">
+        <div class="content-paginador">
+            <div class="d-flex justify-content-center p-2">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </div>
 
 <ng-template #registrarUsuario let-c="close" let-d="dismiss">
@@ -114,11 +126,6 @@
         </form>
     </div>
 </ng-template>
-
-<button (click)="Save()">guardar</button>
-
-
-
 <ng-template #editarUsuario let-c="close" let-d="dismiss">
     <div class="modal-header animated fadeIn">
         <p class="modal-title"><b>Editar Usuario</b></p>

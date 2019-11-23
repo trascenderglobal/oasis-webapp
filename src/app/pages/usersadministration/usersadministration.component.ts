@@ -21,6 +21,9 @@ export class UsersadministrationComponent implements OnInit {
   frmEditarUsuario: FormGroup;
   usuariosRegistrados: any = [];
   usuarioAEditar = "";
+  page = 1;
+  pageSize = 4;
+  collectionSize = ""
 
   constructor(
     private modalService: NgbModal,
@@ -51,8 +54,10 @@ export class UsersadministrationComponent implements OnInit {
 
   ngOnInit() {
     this._listaUsuarioService.getUsuariosRegistrados().subscribe(
-      res => {
+      (res: any) => {
         this.usuariosRegistrados = res;
+        this.collectionSize = res.users.length
+        
       },
       err => {
         switch (err.status) {
@@ -123,7 +128,6 @@ export class UsersadministrationComponent implements OnInit {
 
   obtenerUsuario(idUsuario, content) {
     this.usuarioAEditar = idUsuario;
-    console.log("identificacion usuario ", idUsuario);
     this._editarUsuarioService.getListarUsuario(idUsuario).subscribe(
       (respuesta: any) => {
         let usuarioObtenidoActualizar: any = {
@@ -136,7 +140,6 @@ export class UsersadministrationComponent implements OnInit {
         };
 
         this.frmEditarUsuario.setValue(usuarioObtenidoActualizar);
-        console.log(usuarioObtenidoActualizar);
         this.modalService.open(content);
       },
       err => {
@@ -166,12 +169,10 @@ export class UsersadministrationComponent implements OnInit {
 
   guardarActualizarUsuario() {
     let datos = this.frmEditarUsuario.value;
-    console.log("nuevo nombre", datos);
     this._editarUsuarioService
       .guardarEditarUsuario(this.usuarioAEditar, datos)
       .subscribe(
         res => {
-          console.log(res);
           alert("actualizado correctamente");
           location.reload();
         },

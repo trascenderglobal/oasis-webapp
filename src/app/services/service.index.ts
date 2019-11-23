@@ -1,3 +1,4 @@
+export { ListarStatusService } from './listar-status/listar-status.service';
 export { DetallePedidoService } from './detalle-pedido/detalle-pedido.service';
 export { ListarPerdidosService } from './listar-pedidos/listar-perdidos.service';
 export { EliminarPremioService } from './eliminar-premio/eliminar-premio.service';

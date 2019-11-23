@@ -18,6 +18,9 @@ export class CatalogopremiosComponent implements OnInit {
   frmRegistroPremio: FormGroup;
   listaPremios: any = [];
   premioAEditar = "";
+  page = 1;
+  pageSize = 4;
+  collectionSize = "";
 
   constructor(
     private modalService: NgbModal,
@@ -35,32 +38,62 @@ export class CatalogopremiosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._listarPremiosService.getPremiosRegistrados().subscribe(res => {
-      this.listaPremios = res;
-      console.log(res);
-    });
+    this._listarPremiosService.getPremiosRegistrados().subscribe(
+      (res: any) => {
+        this.listaPremios = res;
+        this.collectionSize = res.prizes.length;
+      },
+      err => {
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          default:
+            alert("otro tipo de error ");
+            break;
+        }
+      }
+    );
   }
 
   guardarPremioCatalogo() {
     this._crearPremioService
       .postCrearPremio(this.frmRegistroPremio.value)
-      .subscribe(res => {
-        alert("registro guardado");
-        location.reload();
-      });
+      .subscribe(
+        (res: any) => {
+          alert("registro guardado");
+          location.reload();
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+            case 409:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 404");
+              break;
+
+            default:
+              alert("otro tipo de error ");
+              break;
+          }
+        }
+      );
   }
 
   obtenerPremio(idPremio, content) {
-    console.log(idPremio);
-
     this.premioAEditar = idPremio;
-
-    // console.log("identificacion del producto ", idProducto);
-
-    this._editarPremioService
-      .getListarPremio(idPremio)
-      .subscribe((respuesta: any) => {
-        console.log(respuesta);
+    this._editarPremioService.getListarPremio(idPremio).subscribe(
+      (respuesta: any) => {
         let premiosObtenidosActualizar: any = {
           description: respuesta.description,
           unit_value: respuesta.unit_value,
@@ -69,18 +102,51 @@ export class CatalogopremiosComponent implements OnInit {
         };
         this.frmRegistroPremio.setValue(premiosObtenidosActualizar);
         this.modalService.open(content);
-      });
+      },
+      err => {
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          default:
+            alert("otro tipo de error ");
+            break;
+        }
+      }
+    );
   }
 
   guardarEditarPremiosCatalogo() {
     let datos = this.frmRegistroPremio.value;
     this._editarPremioService
       .guardarEditarPremio(this.premioAEditar, datos)
-      .subscribe(res => {
-        console.log(res);
-        alert("registro editado");
-        location.reload();
-      });
+      .subscribe(
+        (res: any) => {
+          alert("registro editado");
+          location.reload();
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+
+            case 500:
+              alert("error 404");
+              break;
+
+            default:
+              alert("otro tipo de error ");
+              break;
+          }
+        }
+      );
   }
 
   eliminarPremio(id) {
@@ -112,7 +178,6 @@ export class CatalogopremiosComponent implements OnInit {
       );
     }
   }
-
   modalAgregarPremio(content) {
     this.frmRegistroPremio.reset();
     this.modalService.open(content);
