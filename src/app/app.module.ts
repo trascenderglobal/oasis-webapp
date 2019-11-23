@@ -8,8 +8,6 @@ import { RouterModule } from '@angular/router';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
-
-import { NgbdModalContent } from './pages/usersadministration/usersadministration.component';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -54,7 +52,6 @@ firebase.initializeApp(environment.firebaseConfig);
     PedidosComponent,
     CatalogoComponent,
     CatalogopremiosComponent,
-    NgbdModalContent,
     DetalleComponent,
     // NgbdModalContentC,
     // NgbdModalContentP,
@@ -80,7 +77,6 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   bootstrap: [
     AppComponent,
-    NgbdModalContent,
     // NgbdModalContentC,
     // NgbdModalContentP
   ]
