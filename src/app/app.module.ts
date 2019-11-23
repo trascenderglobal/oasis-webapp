@@ -38,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HelloComponent } from './pages/hello/hello.component';
 import { ServiceModule } from "./services/service.module";
 import { DetallePedidosComponent } from './pages/detalle-pedidos/detalle-pedidos.component';
+import { SubirImagenComponent } from './pages/subir-imagen/subir-imagen/subir-imagen.component';
 
 // FIREBASE INITI
 firebase.initializeApp(environment.firebaseConfig);
@@ -58,7 +59,8 @@ firebase.initializeApp(environment.firebaseConfig);
     // NgbdModalContentC,
     // NgbdModalContentP,
     HelloComponent,
-    DetallePedidosComponent
+    DetallePedidosComponent,
+    SubirImagenComponent
   ],
   imports: [
     BrowserModule,
