@@ -57,7 +57,7 @@ export class UsersadministrationComponent implements OnInit {
       (res: any) => {
         this.usuariosRegistrados = res;
         this.collectionSize = res.users.length
-        
+
       },
       err => {
         switch (err.status) {
@@ -96,7 +96,7 @@ export class UsersadministrationComponent implements OnInit {
     };
 
     this._crearUsuarioService
-      .postCrearUsuario(this.frmRegistroUsuario.value.id, postData)
+      .postCrearUsuario(postData)
       .subscribe(
         res => {
           alert("guardado correctamente");

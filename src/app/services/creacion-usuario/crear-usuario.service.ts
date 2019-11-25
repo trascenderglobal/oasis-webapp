@@ -5,10 +5,10 @@ import { URL_SERVICIOS } from "../../config/config";
   providedIn: "root"
 })
 export class CrearUsuarioService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  postCrearUsuario(id, datos) {
-    const url = URL_SERVICIOS + "user/" + id + "";
+  postCrearUsuario(datos) {
+    const url = URL_SERVICIOS + "user/";
     return this.http.post(url, datos);
   }
 }
