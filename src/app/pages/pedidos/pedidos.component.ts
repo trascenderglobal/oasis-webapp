@@ -24,7 +24,7 @@ export class PedidosComponent implements OnInit {
           fecha: res.orders[i].created,
           nombre: res.orders[i].user.full_name,
           estado: res.orders[i].status.name,
-          observaciones: res.orders[i].order_products[0].product.description,
+          observaciones: res.orders[i].comments,
           direccion: res.orders[i].location
             ? res.orders[i].location.address
             : ""
