@@ -32,6 +32,7 @@ export class CatalogoComponent implements OnInit {
     private _eliminarProductoService: EliminarProductoService
   ) {
     this.frmRegistroCatalogo = new FormGroup({
+      name: new FormControl(),
       description: new FormControl(),
       unit_value: new FormControl(),
       image_url: new FormControl(),
@@ -104,6 +105,7 @@ export class CatalogoComponent implements OnInit {
     this._editarProductoCatalogoService.getListarProducto(idProducto).subscribe(
       (respuesta: any) => {
         let productosObtenidosActualizar: any = {
+          name: respuesta.name,
           description: respuesta.description,
           unit_value: respuesta.unit_value,
           image_url: respuesta.image_url,

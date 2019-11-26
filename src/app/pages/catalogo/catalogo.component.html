@@ -16,6 +16,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">Name</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Valor Unitario</th>
                             <th scope="col">Acción</th>
@@ -23,6 +24,7 @@
                     </thead>
                     <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                         <tr>
+                            <td>{{ item.name }}</td>
                             <td>{{ item.description }}</td>
                             <td>{{ item.unit_value }} USD</td>
                             <td>
@@ -57,6 +59,19 @@
     </div>
     <form [formGroup]="frmRegistroCatalogo" (ngSubmit)="guardarProductoCatalogo()" novalidate="novalidate">
         <div class="modal-body animated fadeIn">
+
+
+
+                <div class="row">
+                        <div class="col-4">
+                            <p>Nombre</p>
+                        </div>
+                        <div class="col-8">
+                            <input formControlName="name" class="form-control" type="text" />
+                        </div>
+                </div>
+
+
             <div class="row">
                 <div class="col-4">
                     <p>Descripción</p>
@@ -125,6 +140,16 @@
     </div>
     <form [formGroup]="frmRegistroCatalogo" (ngSubmit)="guardarEditarProductoCatalogo()" novalidate="novalidate">
         <div class="modal-body animated fadeIn">
+
+                <div class="row">
+                        <div class="col-4">
+                            <p>Nombre</p>
+                        </div>
+                        <div class="col-8">
+                            <input formControlName="name" class="form-control" type="text" />
+                        </div>
+                </div>
+
             <div class="row">
                 <div class="col-4">
                     <p>Descripción</p>
