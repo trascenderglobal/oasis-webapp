@@ -1,0 +1,40 @@
+<div class="container">
+    <form [formGroup]="frmSubirImagen" (ngSubmit)="onUpload()" novalidate="novalidate">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Cargar Imagen</h1>
+            </div>
+            
+
+            <div class="col-md-4 margin-top-10px">
+                <p>Carpeta ubicación</p>
+            </div>
+
+            <div class="col-md-6 margin-top-10px">
+                <input formControlName="nombreCarpetaRuta" class="form-control" />
+            </div>
+
+
+            <div class="col-md-4 margin-top-10px">
+                <p>Nombre Imagen</p>
+            </div>
+
+            <div class="col-md-6 margin-top-10px">
+                <input formControlName="nombreImagen" class="form-control" />
+            </div>
+
+            <div class="col-md-4 margin-top-10px">
+                    <p>Cargar Imagen</p>
+                </div>
+
+            <div class="col-md-6 margin-top-10px">
+                <input type="file" (change)="subirImagen($event)">
+            </div>
+
+            <div class="col-md-12">
+                <button class="btn btn-primary" type="submit">Subir Archivos</button>
+            </div>
+        </div>
+    </form>
+
+</div>

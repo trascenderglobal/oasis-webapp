@@ -1,97 +1,195 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatabaseService } from 'src/app/services/database.service';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormGroup, FormControl } from "@angular/forms";
+import {
+  CrearCatalogoService,
+  MostrarCatalogoProductoService,
+  EditarProductoCatalogoService,
+  EliminarProductoService
+} from "src/app/services/service.index";
 
+// import { DatabaseService } from 'src/app/services/database.service';
 @Component({
-  // tslint:disable-next-line: component-selector
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header animated fadeIn">
-      <p class="modal-title"><b>Agregar Producto</b></p>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body animated fadeIn">
-      <div class="row">
-        <div class="col-4">
-          <p>Descripción</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="text">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <p>Precio</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="number">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <p>Puntos por compra</p>
-        </div>
-        <div class="col-8">
-          <input class="form-control" type="number">
-        </div>
-      </div>
-    </div>
-    <div class="row animated fadeIn mb-5">
-      <div class="col-6 d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-dark btn-primary">
-          <i style="color: white;">Guardar</i>
-        </button>
-      </div>
-      <div class="col-6 d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-dark btn-primary" (click)="activeModal.close('Close click')">
-          <i style="color: white;">Cancelar</i>
-        </button>
-      </div>
-    </div>
-  `
-})
-// tslint:disable-next-line: component-class-suffix
-export class NgbdModalContentC {
-  @Input() name;
-
-  constructor(public activeModal: NgbActiveModal) {}
-}
-
-@Component({
-  selector: 'app-catalogo',
-  templateUrl: './catalogo.component.html',
-  styleUrls: ['./catalogo.component.scss']
+  selector: "app-catalogo",
+  templateUrl: "./catalogo.component.html",
+  styleUrls: ["./catalogo.component.scss"],
+  providers: [NgbModal]
 })
 export class CatalogoComponent implements OnInit {
+  // productos = [];
+  frmRegistroCatalogo: FormGroup;
+  listaProductos: any = [];
+  productoAEditar = "";
+  page = 1;
+  pageSize = 4;
+  collectionSize = "";
 
-  productos = [];
-
-  constructor(  private modalService: NgbModal,
-                private database: DatabaseService,
-                private router: ActivatedRoute ) {
-                  this.router.parent.params.subscribe( parametros => {
-                    console.log('Ruta Hija usuario nuevo');
-                    console.log(parametros);
-                  });
-                }
-
-  ngOnInit() {
-    this.listarProductos();
-  }
-
-  listarProductos() {
-    this.database.getProductos().subscribe((res: any[]) => {
-      console.log(res);
-      this.productos = res;
+  constructor(
+    private modalService: NgbModal,
+    private _crearCatalogoService: CrearCatalogoService,
+    private _mostrarCatalogoProductoService: MostrarCatalogoProductoService,
+    private _editarProductoCatalogoService: EditarProductoCatalogoService,
+    private _eliminarProductoService: EliminarProductoService
+  ) {
+    this.frmRegistroCatalogo = new FormGroup({
+      name: new FormControl(),
+      description: new FormControl(),
+      unit_value: new FormControl(),
+      image_url: new FormControl(),
+      point_value: new FormControl(),
+      available: new FormControl()
     });
   }
 
-  open() {
-    const modalRef = this.modalService.open(NgbdModalContentC);
-    modalRef.componentInstance.name = 'Anything';
+  ngOnInit() {
+    // this.listarProductos();
+    this._mostrarCatalogoProductoService.getProductosRegistrados().subscribe(
+      (res: any) => {
+        this.listaProductos = res;
+        this.collectionSize = res.products.length;
+      },
+      err => {
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          default:
+            alert("otro tipo de error ");
+            break;
+        }
+      }
+    );
   }
 
+  modalAgregarProducto(content) {
+    this.frmRegistroCatalogo.reset();
+    this.modalService.open(content);
+  }
+
+  guardarProductoCatalogo() {
+    this._crearCatalogoService
+      .postCrearCatalogo(this.frmRegistroCatalogo.value)
+      .subscribe(
+        res => {
+          alert("registro guardado");
+          location.reload();
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+            case 409:
+              alert("error 409");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error ");
+              break;
+          }
+        }
+      );
+  }
+
+  obtenerProducto(idProducto, content) {
+    this.productoAEditar = idProducto;
+
+    this._editarProductoCatalogoService.getListarProducto(idProducto).subscribe(
+      (respuesta: any) => {
+        let productosObtenidosActualizar: any = {
+          name: respuesta.name,
+          description: respuesta.description,
+          unit_value: respuesta.unit_value,
+          image_url: respuesta.image_url,
+          point_value: respuesta.point_value,
+          available: respuesta.available
+        };
+
+        this.frmRegistroCatalogo.setValue(productosObtenidosActualizar);
+        this.modalService.open(content);
+      },
+      err => {
+        switch (err.status) {
+          case 401:
+            alert("token caduco");
+            break;
+          case 404:
+            alert("error 404");
+            break;
+          default:
+            alert("otro tipo de error ");
+            break;
+        }
+      }
+    );
+  }
+
+  guardarEditarProductoCatalogo() {
+    let datos = this.frmRegistroCatalogo.value;
+    this._editarProductoCatalogoService
+      .guardarEditarProducto(this.productoAEditar, datos)
+      .subscribe(
+        res => {
+          alert("registro editado");
+          location.reload();
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+            case 404:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error ");
+              break;
+          }
+        }
+      );
+  }
+
+
+
+  eliminarProducto(id) {
+    if (confirm("Desea eliminar el registro?")) {
+      this._eliminarProductoService.eliminoProducto(id).subscribe(
+        res => {
+          if (res) {
+            alert("eliminado");
+            location.reload();
+          }
+        },
+        err => {
+          switch (err.status) {
+            case 401:
+              alert("token caduco");
+              break;
+
+            case 404:
+              alert("error 404");
+              break;
+            case 500:
+              alert("error 500");
+              break;
+            default:
+              alert("otro tipo de error");
+              break;
+          }
+          console.log(err);
+        }
+      );
+    }
+  }
 }

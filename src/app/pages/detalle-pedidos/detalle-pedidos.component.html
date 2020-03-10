@@ -1,0 +1,96 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Concepto</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Número pedido</th>
+            <td>{{datosPrimerTabla.numPedido}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">Fecha</th>
+            <td>{{datosPrimerTabla.fecha}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">Cliente</th>
+            <td>{{datosPrimerTabla.nombre}}</td>
+            <td></td>
+        </tr>
+
+
+        <tr>
+            <th scope="row">Dirección</th>
+            <td>{{datosPrimerTabla.direccion}}</td>
+            <td></td>
+        </tr>
+
+
+        <tr>
+            <th scope="row">Status</th>
+            <td>{{datosPrimerTabla.estado}}</td>
+            <td><button class="btn btn-primary" (click)="editarStatus(editarEstado,datosPrimerTabla.id_estado)">Editar
+                    status</button></td>
+        </tr>
+
+        <tr>
+            <th scope="row">Observaciones</th>
+            <td colspan="2">{{datosPrimerTabla.observaciones}}</td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+<div class="container">
+    <div class="content-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Producto / Premio</th>
+                    <th scope="col">Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item3 of productos">
+
+                    <td>{{item3.items.description}}</td>
+                    <td>{{item3.cantidad}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #editarEstado let-c="close" let-d="dismiss">
+    <div class="modal-header animated fadeIn">
+        <p class="modal-title"><b>Formulario para editar el estado de la order</b></p>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <br>
+    <form [formGroup]="frmEditarStatus" (ngSubmit)="guardarEditarStatus()" novalidate="novalidate">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="">Editar Estado</label>
+                </div>
+                <div class="col-md-8 text-center">
+                    <select id="country" formControlName="status_id">
+                        <option *ngFor="let item5 of listadoStatus.status_orders" [ngValue]="item5.id">{{ item5.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-12 text-center content-btn-enviar">
+                    <button class="btn btn-success" type="submit">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>

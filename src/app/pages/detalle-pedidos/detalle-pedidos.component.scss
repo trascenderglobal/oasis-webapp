@@ -1,0 +1,17 @@
+.content-table {
+  width: 92%;
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  table {
+    width: 65%;
+    text-align: center;
+  }
+}
+
+.content-btn-enviar{
+    padding: 40px 0px;
+    button{
+        width: 55%;
+    }
+}

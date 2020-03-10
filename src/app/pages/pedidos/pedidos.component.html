@@ -1,5 +1,5 @@
 <div class="row">
-  <table class="table animated fadeIn">
+  <table class="table animated fadeIn table-pedidos">
     <thead>
       <tr>
         <th scope="col"># Pedido</th>
@@ -12,36 +12,36 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>0000001</td>
-        <td>07/08/2019</td>
-        <td>Jhon Doe</td>
-        <td>Avenida Siempreviva</td>
-        <td style="width: 300px">
-          <select class="custom-select">
-            <option value="1" selected>Entregado</option>
-            <option value="2">En Distribución</option>
-            <option value="3">No Entregado</option>
-            <option value="3">No Disponible</option>
-          </select>
-        </td>
-        <td>No hay disponibles</td>
+      <tr *ngFor="let item of objects | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ">
+        <td class="wrap">{{item.pedido}}</td>
+        <td>{{item.fecha}}</td>
+        <td>{{item.nombre}}</td>
+        <td>{{item.direccion}}</td>
         <td>
-          <button class="btn btn-outline-dark" [routerLink]="['/detalle', 1]">Ver detalle</button>
+            {{item.estado}}
+        </td>
+        <td>{{item.observaciones}}</td>
+        <td>
+          <button class="btn btn-outline-dark" [routerLink]="['/home/detalle-pedidos/', item.pedido ]">Ver detalle</button>
         </td>
       </tr>
     </tbody>
   </table>
-  <div class="row d-flex justify-content-center align-items-center">
-    <div class="col-6 d-flex justify-content-center align-items-center">
-      <button class="btn btn-outline-dark" disabled>Anterior</button>
-    </div>
-    <div class="col-6 d-flex justify-content-center align-items-center">
-      <button class="btn btn-primary">Siguiente</button>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+            <div class="content-paginador">
+                <div class="d-flex justify-content-center p-2">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
+                </div>
+            </div>
+      </div>
     </div>
   </div>
 
   <div class="container">
     <router-outlet></router-outlet>
   </div>
+
 </div>

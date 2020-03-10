@@ -1,15 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 // Firebase services + enviorment module
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
-
-import { NgbdModalContent } from './pages/usersadministration/usersadministration.component';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -17,12 +15,15 @@ import { BannerComponent } from './shared/banner/banner.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { UsersadministrationComponent } from './pages/usersadministration/usersadministration.component';
 import { PedidosComponent } from './pages/pedidos/pedidos.component';
-import { CatalogoComponent, NgbdModalContentC } from './pages/catalogo/catalogo.component';
-import { CatalogopremiosComponent, NgbdModalContentP } from './pages/catalogopremios/catalogopremios.component';
+import { CatalogoComponent } from './pages/catalogo/catalogo.component';
+import { CatalogopremiosComponent } from './pages/catalogopremios/catalogopremios.component';
 import { DetalleComponent } from './pages/detalle/detalle.component';
 import { AuthService } from './services/auth.service';
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
+
+import { ROUTES } from './app.routes';
+
 
 // ANGULAR MATERIAL
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +34,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import * as firebase from 'firebase';
 import { HttpClientModule } from '@angular/common/http';
 import { HelloComponent } from './pages/hello/hello.component';
+import { ServiceModule } from "./services/service.module";
+import { DetallePedidosComponent } from './pages/detalle-pedidos/detalle-pedidos.component';
+import { SubirImagenComponent } from './pages/subir-imagen/subir-imagen/subir-imagen.component';
 
 // FIREBASE INITI
 firebase.initializeApp(environment.firebaseConfig);
@@ -48,21 +52,23 @@ firebase.initializeApp(environment.firebaseConfig);
     PedidosComponent,
     CatalogoComponent,
     CatalogopremiosComponent,
-    NgbdModalContent,
     DetalleComponent,
-    NgbdModalContentC,
-    NgbdModalContentP,
-    HelloComponent
+    // NgbdModalContentC,
+    // NgbdModalContentP,
+    HelloComponent,
+    DetallePedidosComponent,
+    SubirImagenComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RouterModule.forRoot(ROUTES, { useHash: false }),
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceModule
   ],
   providers: [
     AuthService,
@@ -71,9 +77,8 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   bootstrap: [
     AppComponent,
-    NgbdModalContent,
-    NgbdModalContentC,
-    NgbdModalContentP
+    // NgbdModalContentC,
+    // NgbdModalContentP
   ]
 })
 export class AppModule { }

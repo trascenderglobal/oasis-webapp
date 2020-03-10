@@ -1,43 +1,204 @@
 <div class="row">
-  <div class="col-8">
-    <div class="container mt-5 animated fadeIn">
-      <div class="row">
-        <div class="col-9">
-          <p>Lista de Usuarios</p>
-        </div>
-        <div class="col-4">
-          <button (click)="open()">
-            <i>Crear Usuario</i>
-          </button>
-        </div>
-      </div>
-      <div class="row">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">ID/ Usuario</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Rol</th>
-              <th scope="col">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1123456</th>
-              <td>Jhon</td>
-              <td>Doe</td>
-              <td>
-                <div class="row">
-                  <a href="">Editar</a>
+    <div class="col-8">
+        <div class="container mt-5 animated fadeIn">
+            <div class="row">
+                <div class="col-9">
+                    <p>Lista de Usuarios</p>
                 </div>
-                <div class="row">
-                  <a href="">Eliminar</a>
+                <div class="col-4">
+                    <button (click)="open2(registrarUsuario)">
+                        <i>Crear Usuario</i>
+                    </button>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID/ Usuario</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Acción</th>
+                            <th scope="col">telefono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of usuariosRegistrados.users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                            <th scope="row">{{item.id}}</th>
+                            <td>{{item.full_name}}</td>
+                            <td>{{item.discriminator}}</td>
+                            <td>{{item.phone}}</td>
+                            <td>
+                                <div class="row">
+                                    <span (click)="obtenerUsuario(item.id,editarUsuario)">Editar</span>
+                                </div>
+                                <div class="row">
+                                   <span (click)="eliminarUsuario(item.id)" >Eliminar</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="col-md-12">
+        <div class="content-paginador">
+            <div class="d-flex justify-content-center p-2">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </div>
+
+<ng-template #registrarUsuario let-c="close" let-d="dismiss">
+    <div class="modal-header animated fadeIn">
+        <p class="modal-title"><b>Registrar Usuario</b></p>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body animated fadeIn">
+        <form [formGroup]="frmRegistroUsuario" (ngSubmit)="Save()" novalidate="novalidate">
+            <div class="row">
+                <div class="col-4">
+                    <p>ID</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="id" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Nombre</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="full_name" class="form-control" placeholder="Nombre o Cargo" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Email</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="email" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Contraseña</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="password"  class="form-control" type="password" />
+                </div>
+            </div>
+            <div class="row input-group">
+                <div class="col-4">
+                    <label for="roles">Rol</label>
+                </div>
+                <div class="col-8" style="padding-left: 25px;">
+                    <select formControlName="discriminator"  class="custom-select" id="roles">
+                        <option selected>Seleccione</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Delivery</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row animated fadeIn mb-5">
+                <div class="col-6 d-flex justify-content-center">
+                    <button  type="submit" class="btn btn-outline-dark btn-primary">
+                        <i style="color: white;">Guardar</i>
+                    </button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark btn-primary"
+                        (click)="d(close);">
+                        <i style="color: white;">Cancelar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #editarUsuario let-c="close" let-d="dismiss">
+    <div class="modal-header animated fadeIn">
+        <p class="modal-title"><b>Editar Usuario</b></p>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body animated fadeIn">
+        <form [formGroup]="frmEditarUsuario" (ngSubmit)="guardarActualizarUsuario()" novalidate="novalidate">
+            <div class="row">
+                <div class="col-4">
+                    <p>ID</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="id"  class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Nombre</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="full_name"  class="form-control" placeholder="Nombre o Cargo" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Email</p>
+                </div>
+                <div class="col-8">
+                    <input formControlName="email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <p>Contraseña</p>
+                </div>
+                <div class="col-8">
+                    <input type="password" formControlName="password"  class="form-control" />
+                </div>
+            </div>
+
+            <div class="row input-group">
+                <div class="col-4">
+                    <label for="roles">Rol</label>
+                </div>
+                <div class="col-8" style="padding-left: 25px;">
+                    <select formControlName="discriminator"  class="custom-select" id="roles">
+                        <option selected>Seleccione</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Delivery</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row animated fadeIn mb-5">
+                <div class="col-6 d-flex justify-content-center">
+                    <button  type="submit" class="btn btn-outline-dark btn-primary">
+                        <i style="color: white;">Guardar</i>
+                    </button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark btn-primary"
+                        (click)="activeModal.close('Close click')">
+                        <i style="color: white;">Cancelar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+
