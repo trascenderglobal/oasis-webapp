@@ -1,55 +1,58 @@
-<div class="row">
-    <div class="col-9">
-        <div class="container mt-5 animated fadeIn">
-            <div class="row">
-                <div class="col-8">
-                    <p>Lista de Premios</p>
-                </div>
-                <div class="col-4">
-                    <button (click)="modalAgregarPremio(agregarPremios)">
-                        <i>Agregar Premio</i>
-                    </button>
-                </div>
+<div class="pr-4">
+    <div class="container mt-4 animated fadeIn">
+        <div class="row mb-5">
+            <div class="col-8">
+                <p class="font-weight-bold">Lista de Premios</p>
             </div>
-            <div class="row">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Valor unidad</th>
-                            <th scope="col">url imagen</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of listaPremios.prizes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                            <td>{{item.description}}</td>
-                            <td>{{item.unit_value}}</td>
-                            <td>{{item.image_url}}</td>
-                            <td>
-                                <div class="row">
-                                    <span (click)="obtenerPremio(item.id,editarPremio)">Editar</span>
-                                </div>
-                                <div class="row">
-                                    <span (click)="eliminarPremio(item.id)">Eliminar</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-4 text-right">
+                <button (click)="modalAgregarPremio(agregarPremios)"
+                class="btn btn-outline-success">
+                    Agregar Premio
+                </button>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-12">
-        <div class="content-paginador">
-            <div class="d-flex justify-content-center p-2">
-                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
-                </ngb-pagination>
-            </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Valor unidad</th>
+                        <th scope="col">url imagen</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaPremios.prizes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                        <td>{{item.description}}</td>
+                        <td>{{item.unit_value}}</td>
+                        <td>{{item.image_url}}</td>
+                        <td>
+                            <div class="row">
+                                <button (click)="obtenerPremio(item.id,editarPremio)"
+                                class="btn btn-outline-warning btn-block mt-1">
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="row">
+                                <button (click)="eliminarPremio(item.id)"
+                                class="btn btn-outline-danger btn-block mt-1">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
+    
+    <div class="content-paginador">
+        <div class="d-flex justify-content-center p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+            </ngb-pagination>
+        </div>
+    </div>
 </div>
 
 <ng-template #agregarPremios let-c="close" let-d="dismiss">
@@ -61,14 +64,14 @@
     </div>
     <div class="modal-body animated fadeIn">
         <form [formGroup]="frmRegistroPremio" (ngSubmit)="guardarPremioCatalogo()" novalidate="novalidate">
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-4">
-                    <p>ID</p>
+                    <p>Nombre:</p>
                 </div>
                 <div class="col-8">
-                    <input class="form-control" type="text">
+                    <input formControlName="name" class="form-control" type="text">
                 </div>
-            </div> -->
+            </div>
             <div class="row">
                 <div class="col-4">
                     <p>Descripción</p>
@@ -77,7 +80,6 @@
                     <input formControlName="description" class="form-control" type="text">
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-4">
                     <p>Valor Unitario</p>
@@ -86,7 +88,6 @@
                     <input formControlName="unit_value" class="form-control" type="number">
                 </div>
             </div>
-
 
             <!-- <div class="row">
                 <div class="col-4">
@@ -113,8 +114,6 @@
                     <input formControlName="image_url" class="form-control" type="text" />
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-4">
                     <p>Disponible</p>
@@ -123,12 +122,7 @@
                     <input formControlName="available" type="checkbox" id="cbox2" value="1">
                 </div>
             </div>
-
-
-
-
-
-            <div class="row animated fadeIn mb-5">
+            <div class="row animated fadeIn mb-4 mt-4">
                 <div class="col-6 d-flex justify-content-center">
                     <button type="submit" class="btn btn-outline-dark btn-primary">
                         <i style="color: white;">Guardar</i>
@@ -141,11 +135,8 @@
                 </div>
             </div>
         </form>
-
     </div>
-
 </ng-template>
-
 
 <ng-template #editarPremio let-c="close" let-d="dismiss">
     <div class="modal-header animated fadeIn">
@@ -172,7 +163,6 @@
                     <input formControlName="description" class="form-control" type="text">
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-4">
                     <p>Valor Unitario</p>
@@ -181,8 +171,6 @@
                     <input formControlName="unit_value" class="form-control" type="number">
                 </div>
             </div>
-
-
             <!-- <div class="row">
                 <div class="col-4">
                     <p>Inventario</p>
@@ -199,7 +187,6 @@
                     <input class="form-control" type="number">
                 </div>
             </div> -->
-
             <div class="row">
                 <div class="col-4">
                     <p>Imagen</p>
@@ -208,8 +195,6 @@
                     <input formControlName="image_url" class="form-control" type="text" />
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-4">
                     <p>Disponible</p>
@@ -218,12 +203,7 @@
                     <input formControlName="available" type="checkbox" id="cbox2" value="1">
                 </div>
             </div>
-
-
-
-
-
-            <div class="row animated fadeIn mb-5">
+            <div class="row animated fadeIn mb-4 mt-4">
                 <div class="col-6 d-flex justify-content-center">
                     <button type="submit" class="btn btn-outline-dark btn-primary">
                         <i style="color: white;">Guardar</i>
@@ -236,7 +216,5 @@
                 </div>
             </div>
         </form>
-
     </div>
-
 </ng-template>
