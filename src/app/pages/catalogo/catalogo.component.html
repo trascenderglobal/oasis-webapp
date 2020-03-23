@@ -1,51 +1,54 @@
-<!-- <p>hola</p> -->
-<div class="row">
-    <div class="col-9">
-        <div class="container mt-5 animated fadeIn">
-            <div class="row">
-                <div class="col-8">
-                    <p>Lista de Productos</p>
-                </div>
-                <div class="col-4">
-                    <button (click)="modalAgregarProducto(agregarProducto)">
-                        <i>Agregar Producto</i>
-                    </button>
-                </div>
+<div class="pr-4">
+    <div class="container mt-4 animated fadeIn">
+        <div class="row  mb-5">
+            <div class="col-8">
+                <p class="font-weight-bold">Lista de Productos</p>
             </div>
-            <div class="row">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Valor Unitario</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                        <tr>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.description }}</td>
-                            <td>{{ item.unit_value }} USD</td>
-                            <td>
-                                <div class="row">
-                                    <span (click)="obtenerProducto(item.id,editarProducto)">Editar</span>
-                                </div>
-                                <div class="row">
-                                   <span (click)="eliminarProducto(item.id)" >Eliminar</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-4 text-right">
+                <button (click)="modalAgregarProducto(agregarProducto)"
+                class="btn btn-outline-success">
+                    Agregar Producto
+                </button>
             </div>
         </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Valor Unitario</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.unit_value }} USD</td>
+                        <td>
+                            <div class="row">
+                                <button (click)="obtenerProducto(item.id,editarProducto)"
+                                class="btn btn-outline-warning btn-block mt-1">
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="row">
+                                <button (click)="eliminarProducto(item.id)"
+                                class="btn btn-outline-danger btn-block mt-1">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col-md-12">
-        <div class="content-paginador">
-            <div class="d-flex justify-content-center p-2">
-                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
-            </div>
+
+    <div class="content-paginador">
+        <div class="d-flex justify-content-center p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"> </ngb-pagination>
         </div>
     </div>
 </div>
@@ -59,18 +62,14 @@
     </div>
     <form [formGroup]="frmRegistroCatalogo" (ngSubmit)="guardarProductoCatalogo()" novalidate="novalidate">
         <div class="modal-body animated fadeIn">
-
-
-
-                <div class="row">
-                        <div class="col-4">
-                            <p>Nombre</p>
-                        </div>
-                        <div class="col-8">
-                            <input formControlName="name" class="form-control" type="text" />
-                        </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Nombre</p>
                 </div>
-
+                <div class="col-8">
+                    <input formControlName="name" class="form-control" type="text" />
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-4">
@@ -112,10 +111,8 @@
                     <input formControlName="available"  type="checkbox" id="cbox2" value="1">
                 </div>
             </div>
-
-
         </div>
-        <div class="row animated fadeIn mb-5">
+        <div class="row animated fadeIn mb-4 mt-2">
             <div class="col-6 d-flex justify-content-center">
                 <button type="submit" class="btn btn-outline-dark btn-primary">
                     <i style="color: white;">Guardar</i>
@@ -128,7 +125,6 @@
             </div>
         </div>
     </form>
-
 </ng-template>
 
 <ng-template #editarProducto let-c="close" let-d="dismiss">
@@ -140,16 +136,14 @@
     </div>
     <form [formGroup]="frmRegistroCatalogo" (ngSubmit)="guardarEditarProductoCatalogo()" novalidate="novalidate">
         <div class="modal-body animated fadeIn">
-
-                <div class="row">
-                        <div class="col-4">
-                            <p>Nombre</p>
-                        </div>
-                        <div class="col-8">
-                            <input formControlName="name" class="form-control" type="text" />
-                        </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Nombre</p>
                 </div>
-
+                <div class="col-8">
+                    <input formControlName="name" class="form-control" type="text" />
+                </div>
+            </div>
             <div class="row">
                 <div class="col-4">
                     <p>Descripción</p>
@@ -190,10 +184,8 @@
                     <input formControlName="available"  type="checkbox" id="cbox2" value="1">
                 </div>
             </div>
-
-
         </div>
-        <div class="row animated fadeIn mb-5">
+        <div class="row animated fadeIn mb-4 mt-2">
             <div class="col-6 d-flex justify-content-center">
                 <button type="submit" class="btn btn-outline-dark btn-primary">
                     <i style="color: white;">Guardar</i>
@@ -206,5 +198,4 @@
             </div>
         </div>
     </form>
-
 </ng-template>
