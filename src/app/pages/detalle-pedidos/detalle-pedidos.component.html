@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <th scope="row">Fecha</th>
-            <td>{{datosPrimerTabla.fecha}}</td>
+            <td>{{datosPrimerTabla.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
             <td></td>
         </tr>
         <tr>
@@ -30,8 +30,11 @@
         <tr>
             <th scope="row">Status</th>
             <td>{{datosPrimerTabla.estado}}</td>
-            <td><button class="btn btn-primary" (click)="editarStatus(editarEstado,datosPrimerTabla.id_estado)">Editar
-                    status</button></td>
+            <td>
+                <button class="btn btn-primary" (click)="editarStatus(editarEstado,datosPrimerTabla.id_estado)">
+                    Editar status
+                </button>
+            </td>
         </tr>
         <tr>
             <th scope="row">Observaciones</th>
@@ -40,20 +43,19 @@
     </tbody>
 </table>
 
-<div class="container">
+<div class="container mt-5">
     <div class="content-table">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Producto / Premio</th>
+                    <th scope="col">Producto</th>
                     <th scope="col">Cantidad</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item3 of productos">
-
-                    <td>{{item3.items.description}}</td>
-                    <td>{{item3.cantidad}}</td>
+                <tr *ngFor="let product of productos">
+                    <td>{{ product?.product?.name }}</td>
+                    <td>{{ product?.quantity }}</td>
                 </tr>
             </tbody>
         </table>

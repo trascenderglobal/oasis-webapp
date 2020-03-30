@@ -14,11 +14,13 @@ import { FormGroup, FormControl } from '@angular/forms';
   providers: [NgbModal]
 })
 export class DetallePedidosComponent implements OnInit {
+
   frmEditarStatus: FormGroup;
   datosPrimerTabla: any = {};
   productos: any = [];
   listadoStatus: any = [];
   orderAEditar = '';
+
   constructor(
     private router: ActivatedRoute,
     private detallePedidoService: DetallePedidoService,
@@ -38,36 +40,6 @@ export class DetallePedidosComponent implements OnInit {
     this.listarStatus();
   }
 
-  listarProductos(idCliente: any) {
-    this.detallePedidoService.getListarProductosCliente(idCliente).subscribe(
-      (res2: any) => {
-        for (var i = 0; i < res2.orders.length; i++) {
-          let data2 = {};
-          for (var t = 0; t < res2.orders[i].order_products.length; t++) {
-            data2 = {
-              items: res2.orders[i].order_products[t].product,
-              cantidad: res2.orders[i].order_products[t].quantity
-            };
-            this.productos.push(data2);
-          }
-        }
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert('token caduco');
-            break;
-          case 404:
-            alert('error 404');
-            break;
-          default:
-            alert('otro tipo de error');
-            break;
-        }
-      }
-    );
-  }
-
   getDetallePedido(id: any) {
     this.orderAEditar = id;
     this.detallePedidoService.getListarPedido(id).subscribe(
@@ -82,7 +54,7 @@ export class DetallePedidosComponent implements OnInit {
           direccion: res.location ? res.location.address : ''
         };
 
-        this.listarProductos(res.responsible_id);
+        this.productos = res.order_products;
       },
       err => {
         switch (err.status) {
