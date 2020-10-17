@@ -1,4 +1,10 @@
-<table class="table">
+<div class="m-3 text-right">
+    <button class="btn btn-link" [routerLink]="['/home/pedidos/']">
+        Regresar
+    </button>
+</div>
+
+<table class="table mt-1">
     <thead>
         <tr>
             <th scope="col">Concepto</th>
@@ -9,36 +15,41 @@
     <tbody>
         <tr>
             <th scope="row">Número pedido</th>
-            <td>{{datosPrimerTabla.numPedido}}</td>
+            <td>{{order.id}}</td>
             <td></td>
         </tr>
         <tr>
-            <th scope="row">Fecha</th>
-            <td>{{datosPrimerTabla.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
+            <th scope="row">Fecha de pedido</th>
+            <td>{{order.created | date: 'dd/MM/yyyy HH:mm'}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">Fecha Estimada</th>
+            <td>{{order.estimated_date | date: 'dd/MM/yyyy HH:mm'}}</td>
             <td></td>
         </tr>
         <tr>
             <th scope="row">Cliente</th>
-            <td>{{datosPrimerTabla.nombre}}</td>
+            <td>{{order.user?.full_name}}</td>
             <td></td>
         </tr>
         <tr>
             <th scope="row">Dirección</th>
-            <td>{{datosPrimerTabla.direccion}}</td>
+            <td>{{order.location?.address}}</td>
             <td></td>
         </tr>
         <tr>
             <th scope="row">Status</th>
-            <td>{{datosPrimerTabla.estado}}</td>
+            <td>{{order.status?.name}}</td>
             <td>
-                <button class="btn btn-primary" (click)="editarStatus(editarEstado,datosPrimerTabla.id_estado)">
+                <button class="btn btn-primary" (click)="editarStatus(editarEstado, order.status?.id)">
                     Editar status
                 </button>
             </td>
         </tr>
         <tr>
             <th scope="row">Observaciones</th>
-            <td colspan="2">{{datosPrimerTabla.observaciones}}</td>
+            <td colspan="2">{{order.comments}}</td>
         </tr>
     </tbody>
 </table>
@@ -53,7 +64,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of productos">
+                <tr *ngFor="let product of order?.order_products">
                     <td>{{ product?.product?.name }}</td>
                     <td>{{ product?.quantity }}</td>
                 </tr>
@@ -64,7 +75,7 @@
 
 <ng-template #editarEstado let-c="close" let-d="dismiss">
     <div class="modal-header animated fadeIn">
-        <p class="modal-title"><b>Formulario para editar el estado de la order</b></p>
+        <p class="modal-title font-weight-bold">Editar el estado de orden</p>
         <button type="button" class="close" aria-label="Close" (click)="d()">
             <span aria-hidden="true">&times;</span>
         </button>

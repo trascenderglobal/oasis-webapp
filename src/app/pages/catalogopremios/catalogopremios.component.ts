@@ -1,17 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import {
   CrearPremioService,
-  ListarPremiosService,
   EditarPremioService,
-  EliminarPremioService
+  EliminarPremioService,
+  ListarPremiosService
 } from 'src/app/services/service.index';
 
 @Component({
   selector: 'app-catalogopremios',
   templateUrl: './catalogopremios.component.html',
-  styleUrls: ['./catalogopremios.component.scss'],
+  styles: [''],
   providers: [NgbModal]
 })
 export class CatalogopremiosComponent implements OnInit {
@@ -23,11 +24,12 @@ export class CatalogopremiosComponent implements OnInit {
   collectionSize = '';
 
   constructor(
-    private modalService: NgbModal,
-    private crearPremioService: CrearPremioService,
+    private eliminarPremioService: EliminarPremioService,
     private listarPremiosService: ListarPremiosService,
     private editarPremioService: EditarPremioService,
-    private eliminarPremioService: EliminarPremioService
+    private crearPremioService: CrearPremioService,
+    private toastr: ToastrService,
+    private modalService: NgbModal,
   ) {
     this.frmRegistroPremio = new FormGroup({
       name: new FormControl(),
@@ -39,59 +41,28 @@ export class CatalogopremiosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listarPremiosService.getPremiosRegistrados().subscribe(
-      (res: any) => {
-        this.listaPremios = res;
-        this.collectionSize = res.prizes.length;
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert('token caduco');
-            break;
-          case 404:
-            alert('error 404');
-            break;
-          default:
-            alert('otro tipo de error ');
-            break;
-        }
-      }
-    );
+    this.getPrices();
+  }
+
+  private getPrices(): void {
+    this.listarPremiosService.getPremiosRegistrados()
+    .subscribe((res: any) => {
+      this.listaPremios = res;
+      this.collectionSize = res.prizes.length;
+    }, () => {
+      this.toastr.error('', 'Error al cargar premios.');
+    });
   }
 
   guardarPremioCatalogo() {
-
-    console.log(this.frmRegistroPremio.value);
-
     this.crearPremioService
-      .postCrearPremio(this.frmRegistroPremio.value)
-      .subscribe(
-        (res: any) => {
-          alert('registro guardado');
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert('token caduco');
-              break;
-            case 404:
-              alert('error 404');
-              break;
-            case 409:
-              alert('error 404');
-              break;
-            case 500:
-              alert('error 404');
-              break;
-
-            default:
-              alert('otro tipo de error ');
-              break;
-          }
-        }
-      );
+    .postCrearPremio(this.frmRegistroPremio.value)
+    .subscribe(() => {
+      this.toastr.success('', 'Registro guardado correctamente');
+      this.getPrices();
+    }, () => {
+      this.toastr.error('', 'Error al guardar registro.');
+    });
   }
 
   obtenerPremio(idPremio: any, content: any) {
@@ -107,83 +78,30 @@ export class CatalogopremiosComponent implements OnInit {
         };
         this.frmRegistroPremio.setValue(premiosObtenidosActualizar);
         this.modalService.open(content);
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert('token caduco');
-            break;
-          case 404:
-            alert('error 404');
-            break;
-          default:
-            alert('otro tipo de error ');
-            break;
-        }
-      }
-    );
+      });
   }
 
   guardarEditarPremiosCatalogo() {
     const datos = this.frmRegistroPremio.value;
-
-    console.log(datos);
-
     this.editarPremioService
-      .guardarEditarPremio(this.premioAEditar, datos)
-      .subscribe(
-        (res: any) => {
-          alert('registro editado');
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert('token caduco');
-              break;
-            case 404:
-              alert('error 404');
-              break;
-
-            case 500:
-              alert('error 404');
-              break;
-
-            default:
-              alert('otro tipo de error ');
-              break;
-          }
-        }
-      );
+    .guardarEditarPremio(this.premioAEditar, datos)
+    .subscribe(() => {
+      this.toastr.success('', 'Registro editado correctamente');
+      this.getPrices();
+    }, () => {
+      this.toastr.error('', 'Error al guardar cambios.');
+    });
   }
 
   eliminarPremio(id: any) {
     if (confirm('Desea eliminar el registro?')) {
-      this.eliminarPremioService.eliminoPremio(id).subscribe(
-        res => {
-          if (res) {
-            alert('eliminado');
-            location.reload();
-          }
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert('token caduco');
-              break;
-            case 404:
-              alert('error 404');
-              break;
-            case 500:
-              alert('error 500');
-              break;
-            default:
-              alert('otro tipo de error');
-              break;
-          }
-          console.log(err);
-        }
-      );
+      this.eliminarPremioService.eliminoPremio(id)
+      .subscribe(() => {
+        this.toastr.success('', 'Registro eliminado correctamente.');
+        this.getPrices();
+      }, () => {
+        this.toastr.error('', 'Error al eliminar registro.');
+      });
     }
   }
 
@@ -191,4 +109,5 @@ export class CatalogopremiosComponent implements OnInit {
     this.frmRegistroPremio.reset();
     this.modalService.open(content);
   }
+
 }

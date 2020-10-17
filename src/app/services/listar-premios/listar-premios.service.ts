@@ -1,6 +1,7 @@
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient , HttpHeaders} from "@angular/common/http";
-import { URL_SERVICIOS } from "../../config/config";
+import { URL_SERVICIOS } from '../../config/config';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,12 @@ import { URL_SERVICIOS } from "../../config/config";
 export class ListarPremiosService {
 
   constructor(private http: HttpClient) {}
-  getPremiosRegistrados() {
+
+  public getPremiosRegistrados(): Observable<any> {
     let headers = new HttpHeaders();
-    headers = headers.set('Authorization', "Bearer " + localStorage.getItem('token') );
-    const url = URL_SERVICIOS + "prize/";
-    return this.http.get(url,{headers: headers});
+    headers = headers.set('Authorization', 'Bearer ' + localStorage.getItem('token') );
+    const url = URL_SERVICIOS + 'prize/';
+    return this.http.get(url, { headers });
   }
+
 }

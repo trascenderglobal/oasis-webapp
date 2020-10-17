@@ -1,35 +1,35 @@
-import { Component, OnInit } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { FormGroup, FormControl } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormControl } from '@angular/forms';
 import {
   CrearCatalogoService,
   MostrarCatalogoProductoService,
   EditarProductoCatalogoService,
   EliminarProductoService
-} from "src/app/services/service.index";
+} from 'src/app/services/service.index';
+import { ToastrService } from 'ngx-toastr';
 
-// import { DatabaseService } from 'src/app/services/database.service';
 @Component({
-  selector: "app-catalogo",
-  templateUrl: "./catalogo.component.html",
-  styleUrls: ["./catalogo.component.scss"],
+  selector: 'app-catalogo',
+  templateUrl: './catalogo.component.html',
+  styles: [''],
   providers: [NgbModal]
 })
 export class CatalogoComponent implements OnInit {
-  // productos = [];
   frmRegistroCatalogo: FormGroup;
   listaProductos: any = [];
-  productoAEditar = "";
+  productoAEditar = '';
   page = 1;
-  pageSize = 4;
-  collectionSize = "";
+  pageSize = 5;
+  collectionSize = '';
 
   constructor(
+    private mostrarCatalogoProductoService: MostrarCatalogoProductoService,
+    private editarProductoCatalogoService: EditarProductoCatalogoService,
+    private eliminarProductoService: EliminarProductoService,
+    private crearCatalogoService: CrearCatalogoService,
     private modalService: NgbModal,
-    private _crearCatalogoService: CrearCatalogoService,
-    private _mostrarCatalogoProductoService: MostrarCatalogoProductoService,
-    private _editarProductoCatalogoService: EditarProductoCatalogoService,
-    private _eliminarProductoService: EliminarProductoService
+    private toastr: ToastrService,
   ) {
     this.frmRegistroCatalogo = new FormGroup({
       name: new FormControl(),
@@ -42,26 +42,17 @@ export class CatalogoComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.listarProductos();
-    this._mostrarCatalogoProductoService.getProductosRegistrados().subscribe(
-      (res: any) => {
-        this.listaProductos = res;
-        this.collectionSize = res.products.length;
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert("token caduco");
-            break;
-          case 404:
-            alert("error 404");
-            break;
-          default:
-            alert("otro tipo de error ");
-            break;
-        }
-      }
-    );
+    this.loadProducts();
+  }
+
+  private loadProducts(): void {
+    this.mostrarCatalogoProductoService.getProductosRegistrados()
+    .subscribe((res: any) => {
+      this.listaProductos = res;
+      this.collectionSize = res.products.length;
+    }, () => {
+      this.toastr.error('', 'Error al cargar productos.');
+    });
   }
 
   modalAgregarProducto(content) {
@@ -70,126 +61,57 @@ export class CatalogoComponent implements OnInit {
   }
 
   guardarProductoCatalogo() {
-    this._crearCatalogoService
-      .postCrearCatalogo(this.frmRegistroCatalogo.value)
-      .subscribe(
-        res => {
-          alert("registro guardado");
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-            case 404:
-              alert("error 404");
-              break;
-            case 409:
-              alert("error 409");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error ");
-              break;
-          }
-        }
-      );
+    this.crearCatalogoService
+    .postCrearCatalogo(this.frmRegistroCatalogo.value)
+    .subscribe(() => {
+      this.loadProducts();
+      this.toastr.success('', 'Registro guardado');
+    }, () => {
+      this.toastr.error('', 'Error al guardar');
+    });
   }
 
   obtenerProducto(idProducto, content) {
     this.productoAEditar = idProducto;
 
-    this._editarProductoCatalogoService.getListarProducto(idProducto).subscribe(
-      (respuesta: any) => {
-        let productosObtenidosActualizar: any = {
-          name: respuesta.name,
-          description: respuesta.description,
-          unit_value: respuesta.unit_value,
-          image_url: respuesta.image_url,
-          point_value: respuesta.point_value,
-          available: respuesta.available
-        };
+    this.editarProductoCatalogoService.getListarProducto(idProducto)
+    .subscribe((respuesta: any) => {
+      const productosObtenidosActualizar: any = {
+        name: respuesta.name,
+        description: respuesta.description,
+        unit_value: respuesta.unit_value,
+        image_url: respuesta.image_url,
+        point_value: respuesta.point_value,
+        available: respuesta.available
+      };
 
-        this.frmRegistroCatalogo.setValue(productosObtenidosActualizar);
-        this.modalService.open(content);
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert("token caduco");
-            break;
-          case 404:
-            alert("error 404");
-            break;
-          default:
-            alert("otro tipo de error ");
-            break;
-        }
-      }
-    );
+      this.frmRegistroCatalogo.setValue(productosObtenidosActualizar);
+      this.modalService.open(content);
+    });
   }
 
   guardarEditarProductoCatalogo() {
-    let datos = this.frmRegistroCatalogo.value;
-    this._editarProductoCatalogoService
-      .guardarEditarProducto(this.productoAEditar, datos)
-      .subscribe(
-        res => {
-          alert("registro editado");
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-            case 404:
-              alert("error 404");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error ");
-              break;
-          }
-        }
-      );
+    const datos = this.frmRegistroCatalogo.value;
+    this.editarProductoCatalogoService
+    .guardarEditarProducto(this.productoAEditar, datos)
+    .subscribe(() => {
+      this.toastr.success('', 'Registro editado correctamente.');
+      this.loadProducts();
+    }, () => {
+      this.toastr.error('', 'Error al guardar los cambios.');
+    });
   }
-
-
 
   eliminarProducto(id) {
-    if (confirm("Desea eliminar el registro?")) {
-      this._eliminarProductoService.eliminoProducto(id).subscribe(
-        res => {
-          if (res) {
-            alert("eliminado");
-            location.reload();
-          }
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-
-            case 404:
-              alert("error 404");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error");
-              break;
-          }
-          console.log(err);
-        }
-      );
+    if (confirm('Desea eliminar el registro?')) {
+      this.eliminarProductoService.eliminoProducto(id)
+      .subscribe(() => {
+        this.toastr.success('', 'Producto eliminado');
+        this.loadProducts();
+      }, () => {
+        this.toastr.error('', 'Error al eliminar producto');
+      });
     }
   }
+
 }

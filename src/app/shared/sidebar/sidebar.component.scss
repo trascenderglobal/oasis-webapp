@@ -5,8 +5,6 @@
 }
 
 .item {
-    height: 50px;
-    padding-left: 20px;
     background: #03A6DF;
     border-bottom: solid 3px #077ACC;
     a {
@@ -15,13 +13,4 @@
         font-weight: bold;
         font-size: 14px;
     }
-}
-
-.item:active {
-    background: #002D72;
-    font-weight: bolder;
-}
-
-.alineacion{
-    align-items: center;
 }

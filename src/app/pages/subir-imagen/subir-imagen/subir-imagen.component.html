@@ -28,7 +28,14 @@
                 </div>
 
             <div class="col-md-6 margin-top-10px">
-                <input type="file" (change)="subirImagen($event)">
+                <div class="custom-file">
+                    <input type="file"
+                    id="inputGroupFile1"
+                    accept="image/*"
+                    class="custom-file-input"
+                    (change)="subirImagen($event)">
+                    <label class="custom-file-label" for="inputGroupFile1">Seleccionar imagen</label>
+                </div>
             </div>
 
             <div class="col-md-12">

@@ -1,17 +1,20 @@
 <div class="container">
-    <div class="row item alineacion"  routerLinkActive="active">
+    <div class="row item p-2">
         <a [routerLink]="['user-administration']">Administración de Usuarios</a>
     </div>
-    <div class="row item alineacion"  routerLinkActive="active">
+    <div class="row item p-2">
         <a [routerLink]="['pedidos']">Pedidos</a>
     </div>
-    <div class="row item alineacion"  routerLinkActive="active">
+    <div class="row item p-2">
         <a [routerLink]="['catalogo']">Catálogo de Productos</a>
     </div>
-    <div class="row item alineacion"  routerLinkActive="active">
+    <div class="row item p-2">
         <a [routerLink]="['catalogo-premios']">Catálogo de Premios</a>
     </div>
-    <div class="row item alineacion"  routerLinkActive="active">
+    <div class="row item p-2">
         <a [routerLink]="['cargar-imagenes']">Subir Imágenes</a>
+    </div>
+    <div class="row item p-2">
+        <a [routerLink]="['/']" (click)="signOut()">Salir</a>
     </div>
 </div>

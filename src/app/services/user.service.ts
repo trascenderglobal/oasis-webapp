@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private isUserLoggedIn;
-  public usserLogged:User;
 
-  constructor() {
-    this.isUserLoggedIn = false;
-   }
-   setUserLoggedIn(user:User) {
-    this.isUserLoggedIn = true;
-    this.usserLogged = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-  
+  constructor() {}
+
+  public isAuthenticated() {
+    const helper = new JwtHelperService();
+    const token = localStorage.getItem('token');
+    return !helper.isTokenExpired(token);
   }
-  getUserLoggedIn() {
-  	return JSON.parse(localStorage.getItem('currentUser'));
+
+  public signOut(): void {
+    localStorage.removeItem('token');
   }
-   
+
 }

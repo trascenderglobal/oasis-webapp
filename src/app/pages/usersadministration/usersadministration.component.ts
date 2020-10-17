@@ -1,37 +1,31 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Router } from "@angular/router";
-import {
-  CrearUsuarioService,
-  ListaUsuariosService,
-  EditarUsuarioService,
-  EliminarUsuarioService
-} from "src/app/services/service.index";
-import { FormGroup, FormControl } from "@angular/forms";
-
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { CrearUsuarioService, EditarUsuarioService, EliminarUsuarioService, ListaUsuariosService } from 'src/app/services/service.index';
 
 @Component({
-  selector: "app-usersadministration",
-  templateUrl: "./usersadministration.component.html",
-  styleUrls: ["./usersadministration.component.scss"],
+  selector: 'app-usersadministration',
+  templateUrl: './usersadministration.component.html',
+  styles: [''],
   providers: [NgbModal]
 })
 export class UsersadministrationComponent implements OnInit {
   frmRegistroUsuario: FormGroup;
   frmEditarUsuario: FormGroup;
   usuariosRegistrados: any = [];
-  usuarioAEditar = "";
+  usuarioAEditar = '';
   page = 1;
   pageSize = 4;
-  collectionSize = ""
+  collectionSize = 1;
 
   constructor(
+    private eliminarUsuarioService: EliminarUsuarioService,
+    private editarUsuarioService: EditarUsuarioService,
+    private listaUsuarioService: ListaUsuariosService,
+    private crearUsuarioService: CrearUsuarioService,
     private modalService: NgbModal,
-    private _crearUsuarioService: CrearUsuarioService,
-    private _listaUsuarioService: ListaUsuariosService,
-    private _editarUsuarioService: EditarUsuarioService,
-    private _eliminarUsuario: EliminarUsuarioService,
-    private router: Router
+    private toastr: ToastrService,
   ) {
     this.frmRegistroUsuario = new FormGroup({
       id: new FormControl(),
@@ -39,43 +33,28 @@ export class UsersadministrationComponent implements OnInit {
       email: new FormControl(),
       password: new FormControl(),
       discriminator: new FormControl(),
-      phone: new FormControl("")
+      phone: new FormControl('')
     });
 
     this.frmEditarUsuario = new FormGroup({
-      id: new FormControl(""),
+      id: new FormControl(''),
       password: new FormControl(),
-      full_name: new FormControl(""),
-      email: new FormControl(""),
-      discriminator: new FormControl(""),
-      phone: new FormControl("")
+      full_name: new FormControl(''),
+      email: new FormControl(''),
+      discriminator: new FormControl(''),
+      phone: new FormControl('')
     });
   }
 
   ngOnInit() {
-    this._listaUsuarioService.getUsuariosRegistrados().subscribe(
-      (res: any) => {
-        this.usuariosRegistrados = res;
-        this.collectionSize = res.users.length
+    this.getUsers();
+  }
 
-      },
-      err => {
-        switch (err.status) {
-          case 401:
-            alert("token caduco");
-            break;
-          case 404:
-            alert("error 404");
-            break;
-          case 500:
-            alert("error 500");
-            break;
-          default:
-            alert("otro tipo de error ");
-            break;
-        }
-      }
-    );
+  private getUsers(): void {
+    this.listaUsuarioService.getUsuariosRegistrados().subscribe( (res: any) => {
+      this.usuariosRegistrados = res;
+      this.collectionSize = res.users.length;
+    });
   }
 
   open2(content) {
@@ -86,8 +65,8 @@ export class UsersadministrationComponent implements OnInit {
     this.modalService.open(content);
   }
 
-  Save() {
-    let postData = {
+  public save(): void {
+    const postData = {
       email: this.frmRegistroUsuario.value.email,
       password: this.frmRegistroUsuario.value.password,
       full_name: this.frmRegistroUsuario.value.full_name,
@@ -95,45 +74,25 @@ export class UsersadministrationComponent implements OnInit {
       discriminator: this.frmRegistroUsuario.value.discriminator
     };
 
-    this._crearUsuarioService
-      .postCrearUsuario(postData)
-      .subscribe(
-        res => {
-          alert("guardado correctamente");
-          // this.router.navigate(['/home/user-administration']);
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-
-            case 409:
-              alert("error 409");
-              break;
-            case 404:
-              alert("error 404");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error ");
-              break;
-          }
-        }
-      );
+    this.crearUsuarioService
+    .postCrearUsuario(postData)
+    .subscribe(() => {
+      location.reload();
+      this.toastr.success('', 'Usuario guardado correctamente');
+      this.getUsers();
+    }, () => {
+      this.toastr.error('', 'Error al guardar usuario.');
+    });
   }
 
   obtenerUsuario(idUsuario, content) {
     this.usuarioAEditar = idUsuario;
-    this._editarUsuarioService.getListarUsuario(idUsuario).subscribe(
+    this.editarUsuarioService.getListarUsuario(idUsuario).subscribe(
       (respuesta: any) => {
-        let usuarioObtenidoActualizar: any = {
+        const usuarioObtenidoActualizar: any = {
           id: respuesta.id,
           full_name: respuesta.full_name,
-          password: "",
+          password: '',
           email: respuesta.email,
           discriminator: respuesta.discriminator,
           phone: respuesta.phone
@@ -141,89 +100,31 @@ export class UsersadministrationComponent implements OnInit {
 
         this.frmEditarUsuario.setValue(usuarioObtenidoActualizar);
         this.modalService.open(content);
-      },
-      err => {
-        // Entra aquí si el servicio entrega un código http de error EJ: 404,
-
-        switch (err.status) {
-          case 401:
-            alert("token caduco");
-            break;
-          case 409:
-            alert("error 409");
-            break;
-          case 404:
-            alert("error 404");
-            break;
-          case 500:
-            alert("error 500");
-            break;
-          default:
-            alert("otro tipo de error");
-            break;
-        }
-        console.log(err);
       }
     );
   }
 
   guardarActualizarUsuario() {
-    let datos = this.frmEditarUsuario.value;
-    this._editarUsuarioService
-      .guardarEditarUsuario(this.usuarioAEditar, datos)
-      .subscribe(
-        res => {
-          alert("actualizado correctamente");
-          location.reload();
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-            case 404:
-              alert("error 404");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error");
-              break;
-          }
-          console.log(err);
-        }
-      );
+    const datos = this.frmEditarUsuario.value;
+    this.editarUsuarioService
+    .guardarEditarUsuario(this.usuarioAEditar, datos)
+    .subscribe(() => {
+      this.toastr.success('', 'Usuario actualizado correctamente.');
+      this.getUsers();
+    }, () => {
+      this.toastr.error('', 'Error al editar usuario.');
+    });
   }
 
   eliminarUsuario(id) {
-    if (confirm("Desea eliminar el registro?")) {
-      this._eliminarUsuario.eliminoUsuario(id).subscribe(
-        res => {
-          if (res) {
-            alert("eliminado");
-            location.reload();
-          }
-        },
-        err => {
-          switch (err.status) {
-            case 401:
-              alert("token caduco");
-              break;
-
-            case 404:
-              alert("error 404");
-              break;
-            case 500:
-              alert("error 500");
-              break;
-            default:
-              alert("otro tipo de error");
-              break;
-          }
-          console.log(err);
-        }
-      );
+    if (confirm('Desea eliminar el registro?')) {
+      this.eliminarUsuarioService.eliminoUsuario(id).subscribe(() => {
+        this.toastr.success('', 'Usuario eliminado.');
+        this.getUsers();
+      }, () => {
+        this.toastr.error('', 'Error al eliminar usuario.');
+      });
     }
   }
+
 }

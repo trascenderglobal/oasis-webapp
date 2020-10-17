@@ -1,49 +1,47 @@
 <div class="pr-4">
     <div class="container mt-4 animated fadeIn">
-        <div class="row  mb-5">
+        <div class="row mb-4">
             <div class="col-8">
                 <p class="font-weight-bold">Lista de Productos</p>
             </div>
             <div class="col-4 text-right">
-                <button (click)="modalAgregarProducto(agregarProducto)"
-                class="btn btn-outline-success">
+                <button (click)="modalAgregarProducto(agregarProducto)" class="btn btn-outline-success btn-sm">
                     Agregar Producto
                 </button>
             </div>
         </div>
-        <div class="row">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Valor Unitario</th>
-                        <th scope="col">Acción</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                    <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.description }}</td>
-                        <td>{{ item.unit_value }} USD</td>
-                        <td>
-                            <div class="row">
-                                <button (click)="obtenerProducto(item.id,editarProducto)"
-                                class="btn btn-outline-warning btn-block mt-1">
-                                    Editar
-                                </button>
-                            </div>
-                            <div class="row">
-                                <button (click)="eliminarProducto(item.id)"
-                                class="btn btn-outline-danger btn-block mt-1">
-                                    Eliminar
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        
+        <table class="table animated fadeIn table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Valor Unitario</th>
+                    <th scope="col" colspan="2" >Acción</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let item of listaProductos.products | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
+                <tr>
+                    <th scope="row">
+                        {{ ((page-1) * pageSize) + (i + 1) }}
+                    </th>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.unit_value }} USD</td>
+                    <td class="text-nowrap">
+                        <button (click)="obtenerProducto(item.id,editarProducto)" class="btn btn-outline-warning btn-sm">
+                            Editar
+                        </button>
+                    </td>
+                    <td class="text-nowrap">
+                        <button (click)="eliminarProducto(item.id)" class="btn btn-outline-danger btn-sm">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="content-paginador">
@@ -114,13 +112,13 @@
         </div>
         <div class="row animated fadeIn mb-4 mt-2">
             <div class="col-6 d-flex justify-content-center">
-                <button type="submit" class="btn btn-outline-dark btn-primary">
-                    <i style="color: white;">Guardar</i>
+                <button type="submit" class="btn btn-primary">
+                    Guardar
                 </button>
             </div>
             <div class="col-6 d-flex justify-content-center">
-                <button type="button" class="btn btn-outline-dark btn-primary" (click)="d()">
-                    <i style="color: white;">Cancelar</i>
+                <button type="button" class="btn btn-primary" (click)="d()">
+                    Cancelar
                 </button>
             </div>
         </div>
@@ -187,13 +185,13 @@
         </div>
         <div class="row animated fadeIn mb-4 mt-2">
             <div class="col-6 d-flex justify-content-center">
-                <button type="submit" class="btn btn-outline-dark btn-primary">
-                    <i style="color: white;">Guardar</i>
+                <button type="submit" class="btn btn-primary">
+                    Guardar
                 </button>
             </div>
             <div class="col-6 d-flex justify-content-center">
-                <button type="button" class="btn btn-outline-dark btn-primary" (click)="d()">
-                    <i style="color: white;">Cancelar</i>
+                <button type="button" class="btn btn-primary" (click)="d()">
+                    Cancelar
                 </button>
             </div>
         </div>

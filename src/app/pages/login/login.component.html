@@ -1,32 +1,30 @@
 <app-banner title="LOGIN ADMIN OASIS"></app-banner>
-<form  [formGroup]="frmLogin" (ngSubmit)="inicioSesion()" novalidate="novalidate">
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input  type="email" 
-              formControlName="username"
-              class="form-control" 
-              id="email" 
-              aria-describedby="emailHelp" 
-              placeholder="Enter email"
-           >
-                 <small  id="emailHelp" 
-              class="form-text text-muted">We'll never share your email with anyone else.
-      </small>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input  type="password" 
-               formControlName="password"
-              class="form-control" 
-              id="password" 
-              placeholder="Password" 
-          >
-    </div>
-  <button type="submit" class="btn btn-primary btn-lg btn-block">
-    Submit
-  </button>
-</form>
 
-<!-- <pre>
-  {{ userData | json }}
-</pre> -->
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+    <form [formGroup]="frmLogin" (ngSubmit)="inicioSesion()" novalidate="novalidate" class="p-2 mt-5">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input  type="email" 
+        formControlName="username"
+        class="form-control"
+        id="email" 
+        aria-describedby="emailHelp" 
+        placeholder="Correo electrónico">
+      </div>
+  
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" 
+        formControlName="password"
+        class="form-control" 
+        id="password" 
+        placeholder="Contraseña">
+      </div>
+    
+      <button type="submit" class="btn btn-primary btn-lg btn-block mt-5">
+        INGRESAR
+      </button>
+    </form>
+  </div>
+</div>

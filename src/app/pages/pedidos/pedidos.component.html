@@ -2,32 +2,39 @@
   <p class="font-weight-bold">Lista de Pedidos</p>
 </div>
 
-<div class="container mt-5">
-  <table class="table animated fadeIn table-pedidos">
+<div class="table-responsive mt-4 pr-2">
+  <table class="table animated fadeIn table-hover">
     <thead>
       <tr>
-        <th scope="col"># Pedido</th>
-        <th scope="col">Fecha</th>
+        <th scope="col">#</th>
+        <th scope="col">Fecha de Pedido</th>
+        <th scope="col">Fecha Estimada</th>
         <th scope="col">Cliente</th>
         <th scope="col">Dirección</th>
         <th scope="col">Status</th>
-        <th scope="col">Observación</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of objects | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ">
-        <td class="wrap">{{item.pedido}}</td>
-        <td>{{item.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
-        <td>{{item.nombre}}</td>
-        <td>{{item.direccion}}</td>
-        <td>
-          {{item.estado}}
+      <tr *ngFor="let order of orders | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
+        <th scope="row">
+          {{ ((page-1) * pageSize) + (i + 1) }}
+        </th>
+        <td class="text-nowrap">{{order.created | date: 'dd/MM/yyyy HH:mm'}}</td>
+        <td class="text-nowrap">{{order.estimated_date | date: 'dd/MM/yyyy HH:mm'}}</td>
+        <td class="text-nowrap">
+          {{order.user?.full_name}}
         </td>
-        <td>{{item.observaciones}}</td>
-        <td>
-          <button class="btn btn-outline-dark" [routerLink]="['/home/detalle-pedidos/', item.pedido ]">Ver
-            detalle</button>
+        <td class="">
+          {{order.location?.address}}
+        </td>
+        <td class="text-nowrap">
+          {{order.status?.name}}
+        </td>
+        <td class="text-nowrap">
+          <button class="btn btn-sm btn-link" [routerLink]="['/home/detalle-pedidos/', order.id]">
+            Ver detalle
+          </button>
         </td>
       </tr>
     </tbody>
@@ -43,10 +50,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="container">
-    <router-outlet></router-outlet>
   </div>
 
 </div>
